@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -30,10 +29,5 @@ public class Dogfight extends JPanel{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
-	}
-	
-	public void paint(Graphics g){
-		plane1.paint(g);
-		plane2.paint(g);
 	}
 }

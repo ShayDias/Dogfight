@@ -1,4 +1,3 @@
-import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.JPanel;
@@ -19,12 +18,10 @@ public class Airplane extends JPanel{
 			y = 100;
 		}
 		else{
-			x = 1000;//Change this to match size of window
+			x = 1000;
 			y = 300;
 		}
 	}
 	
-	public void paint(Graphics g){
-		g.drawImage(plane, x, y, this);
-	}
+	
 }

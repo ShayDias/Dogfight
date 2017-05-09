@@ -1,4 +1,3 @@
-import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.JPanel;
@@ -24,7 +23,5 @@ public class Airplane extends JPanel{
 		}
 	}
 	
-	public void paint(Graphics g){
-		g.drawImage(plane, x, y, this);
-	}
+	
 }

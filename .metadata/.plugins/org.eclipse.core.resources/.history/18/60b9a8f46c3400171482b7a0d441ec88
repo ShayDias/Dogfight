@@ -35,5 +35,7 @@ public class Dogfight extends JPanel{
 	public void paint(Graphics g){
 		plane1.paint(g);
 		plane2.paint(g);
+		if()
+		for(int i = 0, i < bullets)
 	}
 }
