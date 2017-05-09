@@ -1,13 +1,16 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
 public class Airplane extends JPanel{
 
 	private Image plane;
-	private boolean isP1 = true;
+	private boolean isP1;
 	private int speed = 6;
 	private int x, y;
 	private int angle, angleChange = 0;
@@ -29,7 +32,6 @@ public class Airplane extends JPanel{
 			y = 300;
 			angle = 180;
 		}
-		angleChange = 0;
 	}
 
 	public void changeSpeed(int change){
@@ -80,19 +82,15 @@ public class Airplane extends JPanel{
 
 	public void rotate(int amount){
 		angleChange = amount;
+		repaint();
+		angleChange = 0;
 	}
 
 	public void paintComponent(Graphics g){
 		Graphics2D g2d = (Graphics2D)g;
-		if(angleChange != 0){
-			g2d.rotate(Math.toRadians(angleChange));
-			angleChange = 0;
-		}
+		g2d.rotate(Math.toRadians(angleChange));
 		if(isP1 == false){
-			g.drawImage(plane, -x, y, null);
-		}
-		else{
-			g.drawImage(plane, x, y, null);
+			g.drawImage(plane, -x, y, this);
 		}
 	}
 }

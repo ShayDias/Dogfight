@@ -118,11 +118,9 @@ public class Dogfight extends JPanel implements KeyListener{
 		//Instantiating airplanes, later will add a selection to this
 		plane1 = new Airplane(new ImageIcon("spitfire.png").getImage(), true);
 		plane2 = new Airplane(new ImageIcon("zero.png").getImage(), false);
-		panel.add(plane1);
-		panel.add(plane2);
 	}
 
-	public void paintComponent(Graphics g){
+	public void paint(Graphics g){
 		g.drawImage(background, 0, 0, this);
 		plane1.paint(g);
 		plane2.paint(g);

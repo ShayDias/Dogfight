@@ -89,7 +89,7 @@ public class Airplane extends JPanel{
 			angleChange = 0;
 		}
 		if(isP1 == false){
-			g.drawImage(plane, -x, y, null);
+			g.drawImage(plane, x, y, null);
 		}
 		else{
 			g.drawImage(plane, x, y, null);

@@ -122,7 +122,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		panel.add(plane2);
 	}
 
-	public void paintComponent(Graphics g){
+	public void paint(Graphics g){
 		g.drawImage(background, 0, 0, this);
 		plane1.paint(g);
 		plane2.paint(g);

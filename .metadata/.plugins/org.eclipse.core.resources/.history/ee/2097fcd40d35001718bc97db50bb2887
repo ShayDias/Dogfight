@@ -36,6 +36,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		if(code == KeyEvent.VK_W){
 			w = true;
+			System.out.println("yeah");
 		}
 		if(code == KeyEvent.VK_A){
 			a = true;
@@ -103,7 +104,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 	//Creates the window
 	public static void setup(){
-
+		
 		//Setting up frame, panel, and listener
 		background = background.getScaledInstance(WIDTH, HEIGHT, 100);
 		JFrame frame = new JFrame("Dogfight!");
@@ -114,18 +115,16 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
-
+		
 		//Instantiating airplanes, later will add a selection to this
 		plane1 = new Airplane(new ImageIcon("spitfire.png").getImage(), true);
-		plane2 = new Airplane(new ImageIcon("zero.png").getImage(), false);
-		panel.add(plane1);
-		panel.add(plane2);
+		plane 2 = new Ariplate(new ImageIcon("zero.png").getImage(), false);
 	}
 
-	public void paintComponent(Graphics g){
+	public void paint(Graphics g){
 		g.drawImage(background, 0, 0, this);
-		plane1.paint(g);
-		plane2.paint(g);
+		//		plane1.paint(g);
+		//		plane2.paint(g);
 		for(int i = 0; i < bullets.size(); i++){
 			bullets.get(i).paint(g);
 		}
