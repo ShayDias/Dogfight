@@ -16,28 +16,28 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	public static Listener listener = new Listener();
 	public static Dogfight panel = new Dogfight();
-
+	
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
-
+	
 	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 100); 
-	private static Image background = new ImageIcon("background.png").getImage();
-
+	private Image background = new ImageIcon("background.jpg").getImage();
+	
 	private boolean w = false, a = false, s = false, d = false, space = false;
 	private boolean up, down, left, right, shift;
-
-
+	
+	
 	public static void main(String[] args){
 		setup();
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyTyped(KeyEvent e) {
 		int code = e.getKeyCode();
-
+		
 		if(code == KeyEvent.VK_W){
 			w = true;
-			System.out.println("yeah");
+			repaint();
 		}
 		if(code == KeyEvent.VK_A){
 			a = true;
@@ -66,9 +66,9 @@ public class Dogfight extends JPanel implements KeyListener{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		int code = e.getKeyCode();
-
+	public void keyPressed(KeyEvent e) {
+int code = e.getKeyCode();
+		
 		if(code == KeyEvent.VK_W){
 			w = false;
 		}
@@ -99,28 +99,28 @@ public class Dogfight extends JPanel implements KeyListener{
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		//nada
+	public void keyReleased(KeyEvent e) {
+		
 	}
 
 	//Creates the window
 	public static void setup(){
-		background = background.getScaledInstance(WIDTH, HEIGHT, 100);
 		JFrame frame = new JFrame("Dogfight!");
 		frame.setBounds(200, 100, 1000, 700);
 		frame.getContentPane().add(panel);
 		panel.setBackground(Color.WHITE);
-		panel.addKeyListener(panel);
 		
+		
+		frame.setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
 	}
-
+	
 	public void paint(Graphics g){
 		g.drawImage(background, 0, 0, this);
-		//		plane1.paint(g);
-		//		plane2.paint(g);
+		plane1.paint(g);
+		plane2.paint(g);
 		for(int i = 0; i < bullets.size(); i++){
 			bullets.get(i).paint(g);
 		}

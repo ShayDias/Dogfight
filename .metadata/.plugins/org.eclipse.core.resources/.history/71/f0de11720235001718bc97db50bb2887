@@ -32,12 +32,11 @@ public class Dogfight extends JPanel implements KeyListener{
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyTyped(KeyEvent e) {
 		int code = e.getKeyCode();
 
 		if(code == KeyEvent.VK_W){
 			w = true;
-			System.out.println("yeah");
 		}
 		if(code == KeyEvent.VK_A){
 			a = true;
@@ -66,7 +65,7 @@ public class Dogfight extends JPanel implements KeyListener{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 
 		if(code == KeyEvent.VK_W){
@@ -99,8 +98,8 @@ public class Dogfight extends JPanel implements KeyListener{
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		//nada
+	public void keyReleased(KeyEvent e) {
+
 	}
 
 	//Creates the window
@@ -110,8 +109,9 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setBounds(200, 100, 1000, 700);
 		frame.getContentPane().add(panel);
 		panel.setBackground(Color.WHITE);
-		panel.addKeyListener(panel);
-		
+
+
+		frame.setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
