@@ -1,4 +1,8 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+
+import javax.swing.JPanel;
 
 public class Airplane{
 
@@ -6,7 +10,7 @@ public class Airplane{
 	private boolean isP1 = true;
 	private int speed = 6;
 	private int x, y;
-	private int angle, angleChange;
+	private int angle, angleChange = 0;
 	private int health;
 	//private int bombs = 3;
 
@@ -17,16 +21,15 @@ public class Airplane{
 		this.isP1 = isP1;
 		if(isP1 == true){
 			x = 0;
-			y = 300;
+			y = 100;
 			angle = 0;
-			angleChange = 0;
 		}
 		else{
-			x = 925;//Change this to match size of window
+			x = 1000;//Change this to match size of window
 			y = 300;
 			angle = 180;
-			angleChange = 180;
 		}
+		angleChange = 0;
 	}
 
 	public void changeSpeed(int change){

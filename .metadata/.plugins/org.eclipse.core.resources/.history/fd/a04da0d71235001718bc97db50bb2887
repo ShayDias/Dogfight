@@ -1,4 +1,8 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+
+import javax.swing.JPanel;
 
 public class Airplane{
 
@@ -22,7 +26,7 @@ public class Airplane{
 			angleChange = 0;
 		}
 		else{
-			x = 925;//Change this to match size of window
+			x = 800;//Change this to match size of window
 			y = 300;
 			angle = 180;
 			angleChange = 180;
