@@ -9,7 +9,7 @@ public class Airplane extends JPanel{
 	private boolean isP1;
 	private int x, y;
 	private int speed;
-	//private int bombs = 3;
+	private int bombs = 3;
 	
 	
 	public Airplane(Image plane, boolean isP1){
