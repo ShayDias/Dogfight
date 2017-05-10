@@ -28,8 +28,8 @@ public class Airplane{
 			x = 925;
 			y = 300;
 			angle = 180;
+			angleChange = 0;
 		}
-		angleChange = 0;
 	}
 
 	public void changeSpeed(int change){

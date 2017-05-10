@@ -28,8 +28,8 @@ public class Airplane{
 			x = 925;
 			y = 300;
 			angle = 180;
+			angleChange = 180;
 		}
-		angleChange = 0;
 	}
 
 	public void changeSpeed(int change){
@@ -114,7 +114,12 @@ public class Airplane{
 
 		if(angleChange != 0){
 			g2d.rotate(Math.toRadians(angleChange));
-			angleChange = 0;
+			if(isP1 == true){
+				angleChange = 0;
+			}
+			else{
+				angleChange = 180;
+			}
 		}
 		if(isP1 == true){
 			g2d.drawImage(plane, x, y, -75, 20, i);

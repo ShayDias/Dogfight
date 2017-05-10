@@ -15,7 +15,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 	private static Airplane plane1, plane2;
 	public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-	public static Dogfight panel;
+	public static Dogfight panel = new Dogfight();
 
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
@@ -27,23 +27,8 @@ public class Dogfight extends JPanel implements KeyListener{
 	private boolean up = false, down = false, left = false, right = false, shift = false;
 
 
-	public Dogfight(){
-		//Instantiating airplanes, later will add a selection to this
-		plane1 = new Airplane(new ImageIcon("spitfire.png").getImage(), true);
-		plane2 = new Airplane(new ImageIcon("zero.png").getImage(), false);
-	}
-	
 	public static void main(String[] args){
-		background = background.getScaledInstance(WIDTH, HEIGHT, 100);
-		JFrame frame = new JFrame("Dogfight!");
-		frame.setBounds(200, 100, 1000, 700);
-		panel = new Dogfight();
-		frame.getContentPane().add(panel);
-		panel.setBackground(Color.WHITE);
-		frame.addKeyListener(panel);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setVisible(true);
+		setup();
 	}
 
 	@Override
@@ -117,6 +102,24 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
+	//Creates the window
+	public static void setup(){
+		
+		//Setting up frame, panel, and listener
+		background = background.getScaledInstance(WIDTH, HEIGHT, 100);
+		JFrame frame = new JFrame("Dogfight!");
+		frame.setBounds(200, 100, 1000, 700);
+		frame.getContentPane().add(panel);
+		panel.setBackground(Color.WHITE);
+		frame.addKeyListener(panel);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setVisible(true);
+
+		//Instantiating airplanes, later will add a selection to this
+		plane1 = new Airplane(new ImageIcon("spitfire.png").getImage(), true);
+		plane2 = new Airplane(new ImageIcon("zero.png").getImage(), false);
+	}
 
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
