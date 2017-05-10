@@ -2,7 +2,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.ImageObserver;
 
 public class Airplane{
@@ -23,8 +22,6 @@ public class Airplane{
 		plane = plane.getScaledInstance(100, 50, 100);
 		this.isP1 = isP1;
 		if(isP1 == true){
-//			transform = AffineTransform.getScaleInstance(-1, -1);
-			transform.translate(-plane.getWidth(null), 0);
 			transform.translate(300, 300);
 			x = 300;
 			y = 300;
@@ -74,10 +71,8 @@ public class Airplane{
 	}
 
 	public void rotate(int rotation){
-//		prevAngle = angle;
+		prevAngle = angle;
 		angle += rotation;
-		transform.rotate(Math.toRadians(rotation));
-
 		Dogfight.panel.repaint();
 	}
 
@@ -88,8 +83,8 @@ public class Airplane{
 
 	public void setAngle(int angle){
 //		prevAngle = this.angle;
-		this.angle = angle;
-		transform.rotate(Math.toRadians(this.angle - angle));
+//		this.angle = angle;
+		transform.rotate(Math.toRadians(angle));
 
 	}
 

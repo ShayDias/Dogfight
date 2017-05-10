@@ -74,10 +74,8 @@ public class Airplane{
 	}
 
 	public void rotate(int rotation){
-//		prevAngle = angle;
+		prevAngle = angle;
 		angle += rotation;
-		transform.rotate(Math.toRadians(rotation));
-
 		Dogfight.panel.repaint();
 	}
 
