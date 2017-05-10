@@ -1,7 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.ImageObserver;
 
 public class Airplane{
 
@@ -19,7 +18,7 @@ public class Airplane{
 		plane = plane.getScaledInstance(100, 50, 100);
 		this.isP1 = isP1;
 		if(isP1 == true){
-			x = 75;
+			x = 0;
 			y = 300;
 			angle = 0;
 			angleChange = 0;
@@ -80,49 +79,39 @@ public class Airplane{
 	public void rotate(int amount){
 		angleChange = amount;
 	}
-
+	
 	public Image getImage(){
 		return plane;
 	}
-
+	
 	public int getAngleChange(){
 		return angleChange;
 	}
-
+	
 	public int getX(){
 		return x;
 	}
-
+	
 	public int getY(){
 		return y;
 	}
-
+	
 	public boolean getIsP1(){
 		return isP1;
 	}
-
+	
 	public void setAngleChange(int change){
 		angleChange = change;
 	}
 
-	public void draw(Graphics g, ImageObserver i){
-		Graphics2D g2d = (Graphics2D)g;
-
+	public void draw(Graphics g){
+		Graphics2D gPlane1 = (Graphics2D)g;
+		
 		if(angleChange != 0){
-			g2d.rotate(Math.toRadians(angleChange));
-			if(isP1 == true){
-				angleChange = 0;
-			}
-			else{
-				angleChange = 180;
-			}
+			gPlane1.rotate(Math.toRadians(angleChange);
+			plane1.setAngleChange(0);
 		}
-		if(isP1 == true){
-			g2d.drawImage(plane, x, y, -75, 20, i);
-		}
-		else{
-			g2d.drawImage(plane, x, y, 75, 20, i);
-		}
+		gPlane1.drawImage(plane1.getImage(), plane1.getX(), plane1.getY(), 75, 20, this);
 	}
-
+	
 }

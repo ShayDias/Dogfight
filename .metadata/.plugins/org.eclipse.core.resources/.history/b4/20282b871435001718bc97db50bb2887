@@ -125,10 +125,10 @@ public class Dogfight extends JPanel implements KeyListener{
 		g.drawImage(background, 0, 0, this);
 
 		//plane1
-		plane1.draw(g, this);
+		plane1.draw(g);
 
 		//plane2
-		plane2.draw(g, this);
+		plane2.draw(g);
 
 
 		for(int i = 0; i < bullets.size(); i++){

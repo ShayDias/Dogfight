@@ -19,7 +19,7 @@ public class Airplane{
 		plane = plane.getScaledInstance(100, 50, 100);
 		this.isP1 = isP1;
 		if(isP1 == true){
-			x = 75;
+			x = 200;
 			y = 300;
 			angle = 0;
 			angleChange = 0;
