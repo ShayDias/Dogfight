@@ -1,0 +1,25 @@
+
+public class Menu {
+	
+	public static boolean counting = false;
+	public static int countdown = 4;
+
+	
+	public Menu(){
+		
+	}
+	
+	public void countdown(){
+		counting = true;
+		for(int i = 0; i <= countdown; countdown --){
+			try {
+				Thread.sleep(1500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			Dogfight.panel.repaint();
+		}
+		counting = false;
+		countdown = 4;
+	}
+}

@@ -63,6 +63,13 @@ public class Airplane{
 		}
 	}
 
+	public void step(int rotation){
+		angleChange = rotation;
+		angle += rotation;
+		this.move();
+		Dogfight.panel.repaint();
+	}
+
 	public void shoot(){
 		Bullet bullet = new Bullet(x + 10, y + 20, angle);
 		Dogfight.bullets.add(bullet);
@@ -75,10 +82,6 @@ public class Airplane{
 
 	public void setSpeed(int speed){
 		this.speed = speed;
-	}
-
-	public void rotate(int amount){
-		angleChange = amount;
 	}
 
 	public Image getImage(){

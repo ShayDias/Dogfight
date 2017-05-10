@@ -1,0 +1,37 @@
+
+public class Menu {
+	
+	public static boolean counting = false;
+	public static String countdown = "3";
+	public static int xMinus = 30;
+
+	
+	public Menu(){
+		
+	}
+	
+	public void countdown(){
+		counting = true;
+		
+		Dogfight.panel.repaint();
+		sleep(1200);
+		for(int i = 0; i < Integer.parseInt(countdown); countdown = (Integer.parseInt(countdown) - 1) + "" ){
+			Dogfight.panel.repaint();
+			sleep(1200);
+		}
+		countdown = "GO";
+		Dogfight.panel.repaint();
+		sleep(1200);
+		counting = false;
+		countdown = "3";
+		Dogfight.panel.repaint();
+	}
+	
+	private void sleep(int time){
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}

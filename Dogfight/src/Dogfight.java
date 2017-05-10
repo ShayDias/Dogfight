@@ -1,6 +1,6 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -26,14 +26,19 @@ public class Dogfight extends JPanel implements KeyListener{
 	private boolean w = false, a = false, s = false, d = false, space = false;
 	private boolean up = false, down = false, left = false, right = false, shift = false;
 
+	
+	public static Menu menu;
+	public static boolean started = false;
+
 
 	public Dogfight(){
 		//Instantiating airplanes, later will add a selection to this
 		plane1 = new Airplane(new ImageIcon("spitfire.png").getImage(), true);
 		plane2 = new Airplane(new ImageIcon("zero.png").getImage(), false);
 	}
-	
+
 	public static void main(String[] args){
+		started = false;
 		background = background.getScaledInstance(WIDTH, HEIGHT, 100);
 		JFrame frame = new JFrame("Dogfight!");
 		frame.setBounds(200, 100, 1000, 700);
@@ -44,6 +49,27 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
+		
+		//To give time for stuff to load
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println();
+		menu = new Menu();
+		menu.countdown();
+		
+		started = true;
+		plane1.step(0);
+		System.out.println("complete");
+		plane1.step(0);
+		System.out.println("complete");
+		plane1.step(0);
+		System.out.println("complete");
+
+
+		
 	}
 
 	@Override
@@ -117,7 +143,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
-
+	
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
 
@@ -127,9 +153,18 @@ public class Dogfight extends JPanel implements KeyListener{
 		//plane2
 		plane2.draw(g, this);
 
-
-		for(int i = 0; i < bullets.size(); i++){
-			bullets.get(i).paint(g);
+		if(started == true){ //If the game has been started
+			for(int i = 0; i < bullets.size(); i++){
+				bullets.get(i).paint(g);
+			}
+			
+		}
+		else{
+			if(Menu.counting == true){
+				g.setColor(Color.RED);
+				g.setFont(new Font("Serif", Font.BOLD, 50));
+				g.drawString(Menu.countdown + "", WIDTH/2 - Menu.xMinus, HEIGHT/2 - 20);
+			}
 		}
 	}
 }
