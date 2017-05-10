@@ -61,10 +61,9 @@ public class Dogfight extends JPanel implements KeyListener{
 		menu.countdown();
 		
 		started = true;
-		plane1.move();
+		plane1.rotate(0);
 		System.out.println("complete");
-		plane1.rotate(45);
-		plane1.move();
+		plane1.rotate(0);
 		System.out.println("complete");
 		plane1.rotate(0);
 		System.out.println("complete");

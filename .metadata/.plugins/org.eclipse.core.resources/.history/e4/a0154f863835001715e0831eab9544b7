@@ -61,12 +61,10 @@ public class Airplane{
 			y += Math.sin(Math.toRadians(angle)) * speed;
 			x -= Math.cos(Math.toRadians(angle))  * speed;
 		}
-		Dogfight.panel.repaint();
 	}
 
 	public void rotate(int rotation){
 		angleChange = rotation;
-		Dogfight.panel.repaint();
 	}
 
 	public void shoot(){
