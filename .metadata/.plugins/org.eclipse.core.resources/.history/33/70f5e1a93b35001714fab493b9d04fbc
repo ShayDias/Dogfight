@@ -52,7 +52,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		
 		//To give time for stuff to load
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -62,10 +62,35 @@ public class Dogfight extends JPanel implements KeyListener{
 		
 		started = true;
 		plane1.move();
-		plane1.rotate(45);
+		plane1.rotate(10);
 		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
 
+		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
 
+		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
+
+		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
+		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
+		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
+		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
+		System.out.println("complete");
+		plane1.move();
+		plane1.rotate(10);
+		System.out.println("complete");
 
 
 		

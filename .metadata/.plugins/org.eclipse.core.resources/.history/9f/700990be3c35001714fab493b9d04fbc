@@ -19,7 +19,7 @@ public class Airplane{
 		plane = plane.getScaledInstance(100, 50, 100);
 		this.isP1 = isP1;
 		if(isP1 == true){
-			x = 300;
+			x = 75;
 			y = 300;
 			angle = 0;
 			prevAngle = angle;
@@ -108,8 +108,6 @@ public class Airplane{
 		Graphics2D g2d = (Graphics2D)g;
 
 		if(angle != prevAngle){
-			System.out.println(angle);
-			System.out.println(prevAngle);
 			g2d.rotate(Math.toRadians(angle - prevAngle));
 		}
 		if(isP1 == true){

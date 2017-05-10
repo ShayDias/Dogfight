@@ -110,7 +110,7 @@ public class Airplane{
 		if(angle != prevAngle){
 			System.out.println(angle);
 			System.out.println(prevAngle);
-			g2d.rotate(Math.toRadians(angle - prevAngle));
+			g2d.rotate(Math.toRadians(Math.abs(angle - prevAngle)));
 		}
 		if(isP1 == true){
 			g2d.drawImage(plane, x, y, -75, 20, i);

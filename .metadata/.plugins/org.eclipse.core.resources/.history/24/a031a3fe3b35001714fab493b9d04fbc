@@ -9,7 +9,7 @@ public class Airplane{
 	private boolean isP1 = true;
 	private int speed = 6;
 	private int x, y;
-	private int angle, prevAngle;
+	private int angle;
 	private int health;
 	//private int bombs = 3;
 
@@ -19,16 +19,14 @@ public class Airplane{
 		plane = plane.getScaledInstance(100, 50, 100);
 		this.isP1 = isP1;
 		if(isP1 == true){
-			x = 300;
+			x = 75;
 			y = 300;
 			angle = 0;
-			prevAngle = angle;
 		}
 		else{
 			x = 925;
 			y = 300;
 			angle = 180;
-			prevAngle = angle;
 		}
 	}
 
@@ -65,7 +63,6 @@ public class Airplane{
 	}
 
 	public void rotate(int rotation){
-		prevAngle = angle;
 		angle += rotation;
 		Dogfight.panel.repaint();
 	}
@@ -76,7 +73,6 @@ public class Airplane{
 	}
 
 	public void setAngle(int angle){
-		prevAngle = this.angle;
 		this.angle = angle;
 	}
 
@@ -107,10 +103,9 @@ public class Airplane{
 	public void draw(Graphics g, ImageObserver i){
 		Graphics2D g2d = (Graphics2D)g;
 
-		if(angle != prevAngle){
-			System.out.println(angle);
-			System.out.println(prevAngle);
-			g2d.rotate(Math.toRadians(angle - prevAngle));
+		if(angleChange != 0){
+			g2d.rotate(Math.toRadians(angleChange));
+			angleChange = 0;
 		}
 		if(isP1 == true){
 			g2d.drawImage(plane, x, y, -75, 20, i);

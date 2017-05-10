@@ -108,8 +108,7 @@ public class Airplane{
 		Graphics2D g2d = (Graphics2D)g;
 
 		if(angle != prevAngle){
-			System.out.println(angle);
-			System.out.println(prevAngle);
+			System.out.println("rotated");
 			g2d.rotate(Math.toRadians(angle - prevAngle));
 		}
 		if(isP1 == true){
