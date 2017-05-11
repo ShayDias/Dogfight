@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 public class Dogfight extends JPanel implements KeyListener{
 
 	private static Airplane plane1, plane2;
-	public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	private static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	public static Dogfight panel;
 
 	public static final int WIDTH = 1000;
@@ -23,10 +23,10 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 100); 
 	private static Image background = new ImageIcon("background.png").getImage();
 
-	private boolean w = false, a = false, s = false, d = false, space = false;
-	private boolean up = false, down = false, left = false, right = false, shift = false;
+	private static boolean w = false, a = false, s = false, d = false, space = false;
+	private static boolean up = false, down = false, left = false, right = false, slash = false;
+	private static final int planeRotation = 8;
 
-	
 	public static Menu menu;
 	public static boolean started = false;
 
@@ -49,26 +49,71 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		
+
 		//To give time for stuff to load
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println();
 		menu = new Menu();
 		menu.countdown();
-		
+
 		started = true;
-		plane1.move();
-		plane1.rotate(45);
-		System.out.println("complete");
+		while(started == true){
+			
+			//Airplane movement
+			if(w == true){
+				plane1.rotate(planeRotation);
+			}
+			if(a == true){
+				plane1.changeSpeed(-1);
+			}
+			if(s == true){
+				plane1.rotate(-planeRotation);
+			}
+			if(d == true){
+				plane1.changeSpeed(1);
+			}
+			if(up == true){
+				plane2.rotate(planeRotation);
+			}
+			if(down == true){
+				plane2.rotate(-planeRotation);
+			}
+			if(left == true){
+				plane2.changeSpeed(-1);
+			}
+			if(right == true){
+				plane2.changeSpeed(1);
+			}
+			if(space == true){
+				plane1.shoot();
+			}
+			if(slash == true){
+				plane2.shoot();
+			}
+			//Move bullets, happens before planes move so they don't run into their own bullets
+			for(int i = 0; i < bullets.size(); i++){
+				bullets.get(i).move();
+			}
+			
+			plane1.move();
+			plane2.move();
+			
+
+			//Delay between loops
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 
 
 
 
-		
+
 	}
 
 	@Override
@@ -76,31 +121,50 @@ public class Dogfight extends JPanel implements KeyListener{
 		int code = e.getKeyCode();
 
 		if(code == KeyEvent.VK_W){
-			w = true;
+			if(s != true){
+				w = true;
+			}
 		}
 		if(code == KeyEvent.VK_A){
-			a = true;
+			if(d != true){
+				a = true;
+			}
 		}
 		if(code == KeyEvent.VK_S){
-			s = true;
+			if(w != true){
+				s = true;
+			}
 		}
 		if(code == KeyEvent.VK_D){
-			d = true;
+			if(a != true){
+				d = true;
+			}
 		}
 		if(code == KeyEvent.VK_SPACE){
 			space = true;
 		}
-		if(code == KeyEvent.VK_KP_UP){
-			up = true;
+		if(code == KeyEvent.VK_UP){
+			if(down != true){
+				up = true;
+			}
 		}
-		if(code == KeyEvent.VK_KP_DOWN){
-			down = true;
+		if(code == KeyEvent.VK_DOWN){
+			if(up != true){
+				down = true;
+			}
 		}
-		if(code == KeyEvent.VK_KP_LEFT){
-			left = true;
+		if(code == KeyEvent.VK_LEFT){
+			if(right != true){
+				left = true;
+			}
 		}
-		if(code == KeyEvent.VK_KP_RIGHT){
-			right = true;
+		if(code == KeyEvent.VK_RIGHT){
+			if(left != true){
+				right = true;
+			}
+		}
+		if(code == KeyEvent.VK_SLASH){
+			slash = true;
 		}
 	}
 
@@ -123,16 +187,16 @@ public class Dogfight extends JPanel implements KeyListener{
 		if(code == KeyEvent.VK_SPACE){
 			space = false;
 		}
-		if(code == KeyEvent.VK_KP_UP){
+		if(code == KeyEvent.VK_UP){
 			up = false;
 		}
-		if(code == KeyEvent.VK_KP_DOWN){
+		if(code == KeyEvent.VK_DOWN){
 			down = false;
 		}
-		if(code == KeyEvent.VK_KP_LEFT){
+		if(code == KeyEvent.VK_LEFT){
 			left = false;
 		}
-		if(code == KeyEvent.VK_KP_RIGHT){
+		if(code == KeyEvent.VK_RIGHT){
 			right = false;
 		}
 	}
@@ -143,6 +207,10 @@ public class Dogfight extends JPanel implements KeyListener{
 	}
 
 	
+	public static void addBullet(Bullet bullet){
+		bullets.add(bullet);
+	}
+
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
 
@@ -156,7 +224,7 @@ public class Dogfight extends JPanel implements KeyListener{
 			for(int i = 0; i < bullets.size(); i++){
 				bullets.get(i).paint(g);
 			}
-			
+
 		}
 		else{
 			if(Menu.counting == true){

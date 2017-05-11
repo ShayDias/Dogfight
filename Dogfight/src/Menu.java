@@ -10,9 +10,9 @@ public class Menu {
 		
 	}
 	
+	//Performs the countdown
 	public void countdown(){
 		counting = true;
-		
 		Dogfight.panel.repaint();
 		sleep(1200);
 		for(int i = 0; i < Integer.parseInt(countdown); countdown = (Integer.parseInt(countdown) - 1) + "" ){
@@ -29,6 +29,7 @@ public class Menu {
 		Dogfight.panel.repaint();
 	}
 	
+	//To save on writing try/catch blocks
 	private void sleep(int time){
 		try {
 			Thread.sleep(time);

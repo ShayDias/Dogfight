@@ -9,7 +9,7 @@ public class Airplane{
 	private boolean isP1 = true;
 	private int speed = 6;
 	private int x, y;
-	private int angle, angleChange;
+	private int angle, prevAngle;
 	private int health;
 	//private int bombs = 3;
 
@@ -19,16 +19,16 @@ public class Airplane{
 		plane = plane.getScaledInstance(100, 50, 100);
 		this.isP1 = isP1;
 		if(isP1 == true){
-			x = 0;
+			x = 300;
 			y = 300;
 			angle = 0;
-			angleChange = 0;
+			prevAngle = angle;
 		}
 		else{
-			x = 400;//Change this to match size of window
+			x = 925;
 			y = 300;
 			angle = 180;
-			angleChange = 180;
+			prevAngle = angle;
 		}
 	}
 
@@ -61,6 +61,13 @@ public class Airplane{
 			y += Math.sin(Math.toRadians(angle)) * speed;
 			x -= Math.cos(Math.toRadians(angle))  * speed;
 		}
+		Dogfight.panel.repaint();
+	}
+
+	public void rotate(int rotation){
+		prevAngle = angle;
+		angle += rotation;
+		//Dogfight.panel.repaint();
 	}
 
 	public void shoot(){
@@ -69,7 +76,7 @@ public class Airplane{
 	}
 
 	public void setAngle(int angle){
-		angleChange = this.angle - angle;
+		prevAngle = this.angle;
 		this.angle = angle;
 	}
 
@@ -77,47 +84,40 @@ public class Airplane{
 		this.speed = speed;
 	}
 
-	public void rotate(int amount){
-		angleChange = amount;
-	}
-	
 	public Image getImage(){
 		return plane;
 	}
-	
-	public int getAngleChange(){
-		return angleChange;
-	}
-	
+
 	public int getX(){
 		return x;
 	}
-	
+
 	public int getY(){
 		return y;
 	}
-	
+
 	public boolean getIsP1(){
 		return isP1;
 	}
-	
-	public void setAngleChange(int change){
-		angleChange = change;
-	}
 
+	public void setImage(Image image){
+		plane = image;
+	}
+	
 	public void draw(Graphics g, ImageObserver i){
 		Graphics2D g2d = (Graphics2D)g;
-		
-		if(angleChange != 0){
-			g2d.rotate(Math.toRadians(angleChange));
-			if(isP1 == true){
-				angleChange = 0;
-			}
-			else{
-				angleChange = 180;
-			}
+
+		if(angle != prevAngle){
+			System.out.println(angle);
+			System.out.println(prevAngle);
+			g2d.rotate(Math.toRadians(angle - prevAngle));
 		}
-		g2d.drawImage(plane, x, y, 75, 20, i);
+		if(isP1 == true){
+			g2d.drawImage(plane, x, y, -75, 20, i);
+		}
+		else{
+			g2d.drawImage(plane, x, y, 75, 20, i);
+		}
 	}
-	
+
 }
