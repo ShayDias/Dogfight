@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -12,6 +13,7 @@ public class Bullet extends JPanel{
 	private int x, y;
 	public static final int SIZE = 5;
 	private int speed = 60;
+	private int angle;
 	private Rectangle hitbox;
 	private AffineTransform transform;
 	private Image bullet = new ImageIcon("bullet.png").getImage();
@@ -31,9 +33,9 @@ public class Bullet extends JPanel{
 		bullet = null;
 	}
 
-//	public Rectangle getHitbox(){
-//		
-//	}
+	public Rectangle getHitbox(){
+		
+	}
 	
 	public void exitFrame(){
 		Dogfight.removeBullet(this);

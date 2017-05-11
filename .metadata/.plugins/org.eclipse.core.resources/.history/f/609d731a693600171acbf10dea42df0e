@@ -100,7 +100,6 @@ public class Dogfight extends JPanel implements KeyListener{
 				bullets.get(i).move();
 			}
 			
-			
 			plane1.move();
 			plane2.move();
 			

@@ -45,8 +45,6 @@ public class Airplane{
 	//Moves the plane based on speed
 	public void move(){
 		transform.translate(-(2 * speed), 0);
-		x+= Math.cos(angle) * (-2 * speed);
-		y+= Math.sin(angle) * (-2 * speed);
 		Dogfight.panel.repaint();
 	}
 
@@ -59,7 +57,7 @@ public class Airplane{
 
 	//Creates a new bullet
 	public void shoot(){
-		Bullet bullet = new Bullet(x + 10, y + 20, new AffineTransform(transform));
+		Bullet bullet = new Bullet(x + 10, y + 20, transform);
 		Dogfight.addBullet(bullet);
 	}
 
