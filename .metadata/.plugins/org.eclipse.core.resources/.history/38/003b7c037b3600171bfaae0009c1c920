@@ -1,4 +1,3 @@
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Menu {
@@ -11,15 +10,11 @@ public class Menu {
 
 	
 	public Menu(){
-		
+		start.setBackground();
 	}
 	
 	public JPanel getStart(){
 		return start;
-	}
-	
-	public void start(){
-		Dogfight.setBackground(new ImageIcon("dogfight.jpg").getImage());
 	}
 	
 	//Performs the countdown

@@ -221,10 +221,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		bullet = new Bullet();
 	}
 
-	public static void setBackground(Image image){
-		background = image;
-	}
-	
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
 

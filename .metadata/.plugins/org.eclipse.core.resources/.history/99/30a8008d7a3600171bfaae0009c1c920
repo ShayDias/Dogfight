@@ -1,26 +1,17 @@
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
 public class Menu {
 	
 	public static boolean counting = false;
 	public static String countdown = "3";
 	public static int xMinus = 30;
-	
-	private JPanel start = new JPanel();
 
 	
 	public Menu(){
 		
 	}
 	
-	public JPanel getStart(){
-		return start;
-	}
 	
-	public void start(){
-		Dogfight.setBackground(new ImageIcon("dogfight.jpg").getImage());
-	}
+	
 	
 	//Performs the countdown
 	public void countdown(){
