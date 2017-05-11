@@ -11,7 +11,7 @@ public class Airplane{
 	private Image plane;
 	private boolean isP1 = true;
 	private int speed = 6;
-	private int[] xs, ys;
+//	private int[] xs, ys;
 	private double[] src;
 	double[] dst = new double[8];
 	private int[] xTrans, yTrans;
@@ -31,19 +31,19 @@ public class Airplane{
 		if(isP1 == true){
 			transform.translate(80, 300);
 			transform.scale(-1, 1);
-			xs = new int[]{0, 80, 80, 0};
-			ys = new int[] {300, 300, 325, 325};
-			angle = 0;
+			xTrans = new int[]{0, 80, 80, 0};
+			yTrans = new int[] {300, 300, 325, 325};
+//			angle = 0;
 		}
 		else{
 			transform.translate(920, 300);
-			xs = new int[]{920, 1000, 1000, 920};
-			ys = new int[]{300, 300, 325, 325};
-			angle = 180;
+			xTrans = new int[]{920, 1000, 1000, 920};
+			yTrans = new int[]{300, 300, 325, 325};
+//			angle = 180;
 		}
 		t = new AffineTransform(transform);
 //		t = AffineTransform.getRotateInstance(0.1, 5, 5);
-		hitbox = new Polygon(xs, ys, 4);
+		hitbox = new Polygon(xTrans, yTrans, 4);
 	}
 
 	//Changes the speed without going over or under by too much
@@ -57,10 +57,10 @@ public class Airplane{
 	public void move(){
 		transform.translate(-(2 * speed), 0);
 		src = new double[]{
-		        xs[0], ys[0],
-		        xs[1], ys[1],
-		        xs[2], ys[2],
-		        xs[3], ys[3]};
+		        xTrans[0], yTrans[0],
+		        xTrans[1], yTrans[1],
+		        xTrans[2], yTrans[2],
+		        xTrans[3], yTrans[3]};
 		t = new AffineTransform(transform);
 		t.transform(src, 0, dst, 0, 4);
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
@@ -72,10 +72,10 @@ public class Airplane{
 	public void rotate(int rotation){
 		transform.rotate(Math.toRadians(rotation));
 		src = new double[]{
-		        xs[0], ys[0],
-		        xs[1], ys[1],
-		        xs[2], ys[2],
-		        xs[3], ys[3]};
+		        xTrans[0], yTrans[0],
+		        xTrans[1], yTrans[1],
+		        xTrans[2], yTrans[2],
+		        xTrans[3], yTrans[3]};
 		t = new AffineTransform(transform);
 		t.transform(src, 0, dst, 0, 4);
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};

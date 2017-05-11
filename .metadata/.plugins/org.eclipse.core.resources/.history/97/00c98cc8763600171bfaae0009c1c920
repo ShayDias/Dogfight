@@ -64,7 +64,7 @@ public class Airplane{
 		t = new AffineTransform(transform);
 		t.transform(src, 0, dst, 0, 4);
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
-		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		yTrans = new int[]{(int)dst[1] - 50, (int)dst[3] - 50,(int)dst[5] - 50,(int)dst[7] - 50};
 		hitbox = new Polygon(xTrans, yTrans, 4);		
 		Dogfight.panel.repaint();
 	}
@@ -77,6 +77,7 @@ public class Airplane{
 		        xs[2], ys[2],
 		        xs[3], ys[3]};
 		t = new AffineTransform(transform);
+		t = AffineTransform.getRotateInstance(0.1, 5, 5);
 		t.transform(src, 0, dst, 0, 4);
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
 		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};

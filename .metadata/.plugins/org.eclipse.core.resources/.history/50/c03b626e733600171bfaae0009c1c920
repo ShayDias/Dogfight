@@ -3,6 +3,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
 
@@ -19,8 +21,6 @@ public class Airplane{
 	private Polygon hitbox;
 	private int health;
 	private AffineTransform transform;
-	private AffineTransform t;
-
 	//private int bombs = 3;
 
 
@@ -38,12 +38,18 @@ public class Airplane{
 		else{
 			transform.translate(920, 300);
 			xs = new int[]{920, 1000, 1000, 920};
-			ys = new int[]{300, 300, 325, 325};
+			ys = new int[]{300, 325, 325, 300};
 			angle = 180;
 		}
-		t = new AffineTransform(transform);
-//		t = AffineTransform.getRotateInstance(0.1, 5, 5);
-		hitbox = new Polygon(xs, ys, 4);
+		src = new double[]{
+		        xs[0], ys[0],
+		        xs[1], ys[1],
+		        xs[2], ys[2],
+		        xs[3], ys[3]};
+		transform.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
 	}
 
 	//Changes the speed without going over or under by too much
@@ -61,8 +67,7 @@ public class Airplane{
 		        xs[1], ys[1],
 		        xs[2], ys[2],
 		        xs[3], ys[3]};
-		t = new AffineTransform(transform);
-		t.transform(src, 0, dst, 0, 4);
+		transform.transform(src, 0, dst, 0, 4);
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
 		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
 		hitbox = new Polygon(xTrans, yTrans, 4);		
@@ -70,14 +75,21 @@ public class Airplane{
 	}
 
 	public void rotate(int rotation){
+		angle += rotation;
+		if(angle < 0){
+			angle += 360;
+		}
+		while(angle >= 360){
+			System.out.println("changing");
+			angle -= 360;
+		}
 		transform.rotate(Math.toRadians(rotation));
 		src = new double[]{
 		        xs[0], ys[0],
 		        xs[1], ys[1],
 		        xs[2], ys[2],
 		        xs[3], ys[3]};
-		t = new AffineTransform(transform);
-		t.transform(src, 0, dst, 0, 4);
+		transform.transform(src, 0, dst, 0, 4);
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
 		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
 		hitbox = new Polygon(xTrans, yTrans, 4);

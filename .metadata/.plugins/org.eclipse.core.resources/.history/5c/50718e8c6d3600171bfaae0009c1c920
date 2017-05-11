@@ -10,14 +10,15 @@ import java.awt.geom.AffineTransform;
 public class Bullet extends JPanel{
 
 	private int x, y;
-	private int angle;
 	public static final int SIZE = 5;
 	private int speed = 60;
 	private Rectangle hitbox;
 	private AffineTransform transform;
 	private Image bullet = new ImageIcon("bullet.png").getImage();
 	
-	public Bullet(AffineTransform transform, int angle){
+	public Bullet(int x, int y,  AffineTransform transform){
+		this.x = x;
+		this.y = y;
 		transform.translate(90, 15);
 		transform.scale(-1, 1);
 		bullet = bullet.getScaledInstance(20, 5, 100);

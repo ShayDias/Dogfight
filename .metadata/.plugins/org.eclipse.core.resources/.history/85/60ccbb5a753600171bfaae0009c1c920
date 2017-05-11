@@ -107,7 +107,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 			//Delay between loops
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -123,6 +123,7 @@ public class Dogfight extends JPanel implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_W){
+			System.out.println("read");
 			if(s != true){
 				w = true;
 			}
@@ -133,6 +134,7 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 		}
 		if(code == KeyEvent.VK_S){
+			System.out.println("read");
 			if(w != true){
 				s = true;
 			}

@@ -11,7 +11,7 @@ public class Airplane{
 	private Image plane;
 	private boolean isP1 = true;
 	private int speed = 6;
-	private int[] xs, ys;
+//	private int[] xs, ys;
 	private double[] src;
 	double[] dst = new double[8];
 	private int[] xTrans, yTrans;
@@ -31,15 +31,15 @@ public class Airplane{
 		if(isP1 == true){
 			transform.translate(80, 300);
 			transform.scale(-1, 1);
-			xs = new int[]{0, 80, 80, 0};
-			ys = new int[] {300, 300, 325, 325};
-			angle = 0;
+			xTrans = new int[]{0, 80, 80, 0};
+			yTrans = new int[] {300, 300, 325, 325};
+//			angle = 0;
 		}
 		else{
 			transform.translate(920, 300);
-			xs = new int[]{920, 1000, 1000, 920};
-			ys = new int[]{300, 300, 325, 325};
-			angle = 180;
+			xTrans = new int[]{920, 1000, 1000, 920};
+			yTrans = new int[]{300, 300, 325, 325};
+//			angle = 180;
 		}
 		t = new AffineTransform(transform);
 //		t = AffineTransform.getRotateInstance(0.1, 5, 5);
