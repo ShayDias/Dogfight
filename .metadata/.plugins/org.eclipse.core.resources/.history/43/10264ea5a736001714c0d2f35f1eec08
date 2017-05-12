@@ -32,26 +32,20 @@ public class Airplane{
 			transform.translate(80, 300);
 			transform.scale(-1, 1);
 			xs = new int[]{0, 80, 80, 0};
-			ys = new int[] {0, 0, 25, 25};
+//			ys = new int[] {300, 300, 325, 325};
+			ys = new int[] {0, 0, 0, 0};
 
 			angle = 0;
 		}
 		else{
 			transform.translate(920, 300);
-			xs = new int[]{0, 80, 80, 0};
-			ys = new int[]{0, 0, 25, 25};
+			xs = new int[]{920, 1000, 1000, 920};
+			ys = new int[]{300, 300, 325, 325};
 			angle = 180;
 		}
-		src = new double[]{
-		        xs[0], ys[0],
-		        xs[1], ys[1],
-		        xs[2], ys[2],
-		        xs[3], ys[3]};
 		t = new AffineTransform(transform);
-		t.transform(src, 0, dst, 0, 4);
-		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
-		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
-		hitbox = new Polygon(xTrans, yTrans, 4);
+//		t = AffineTransform.getRotateInstance(0.1, 5, 5);
+		hitbox = new Polygon(xs, ys, 4);
 	}
 
 	//Changes the speed without going over or under by too much
@@ -75,10 +69,6 @@ public class Airplane{
 		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
 		hitbox = new Polygon(xTrans, yTrans, 4);		
 		Dogfight.panel.repaint();
-	}
-	
-	public Polygon getHitbox(){
-		return hitbox;
 	}
 
 	public void rotate(int rotation){

@@ -76,10 +76,6 @@ public class Airplane{
 		hitbox = new Polygon(xTrans, yTrans, 4);		
 		Dogfight.panel.repaint();
 	}
-	
-	public Polygon getHitbox(){
-		return hitbox;
-	}
 
 	public void rotate(int rotation){
 		transform.rotate(Math.toRadians(rotation));

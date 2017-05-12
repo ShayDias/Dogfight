@@ -29,7 +29,7 @@ public class Bullet extends JPanel{
 		transform.scale(-1, 1);
 		bullet = bullet.getScaledInstance(20, 5, 100);
 		this.transform = transform;
-		xs = new int[]{0, 20, 20, 0};
+		xs = new int[]{0, 80, 80, 0};
 		ys = new int[] {0, 0, 5, 5};
 		src = new double[]{
 		        xs[0], ys[0],
