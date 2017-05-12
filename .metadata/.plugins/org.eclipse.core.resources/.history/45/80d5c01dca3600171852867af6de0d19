@@ -11,7 +11,7 @@ public class Airplane{
 
 	private Image plane;
 	private boolean isP1 = true;
-	private int speed = 5;
+	private int speed = 6;
 	private int[] xs, ys;
 	private double[] src;
 	double[] dst = new double[8];
@@ -24,14 +24,12 @@ public class Airplane{
 	private boolean flying = true;
 	private boolean turning = false;
 	private int rotation = 8;
-	private int canShoot;
 
 	//private int bombs = 3;
 
 
 	public Airplane(Image plane, boolean isP1){
 		flying = true;
-		canShoot = 0;
 		this.plane = plane.getScaledInstance(80, 25, 100);
 		transform = new AffineTransform();
 		health = 100;
@@ -64,7 +62,7 @@ public class Airplane{
 
 	//Changes the speed without going over or under by too much
 	public void changeSpeed(int change){
-		if(speed + change <= 4 && speed + change > 1){
+		if(speed + change <= 8 && speed + change > 2){
 			speed += change;
 		}
 	}
@@ -98,19 +96,19 @@ public class Airplane{
 		if(isP1 == false){
 			this.rotate(30 - angle);
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e2) {
 				e2.printStackTrace();
 			}
 			this.rotate(60 - angle);
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			this.rotate(90 - angle);
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -118,25 +116,25 @@ public class Airplane{
 		else{
 			this.rotate(210 - angle);
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e2) {
 				e2.printStackTrace();
 			}
 			this.rotate(240 - angle);
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			this.rotate(270 - angle);
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-
-
+		
+		
 		speed = 15;
 	}
 
@@ -197,14 +195,8 @@ public class Airplane{
 
 	//Creates a new bullet
 	public void shoot(){
-		canShoot++;
-		if(canShoot > 6){
-			canShoot = 0;
-		}
-		if(canShoot == 0){
-			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
-			Dogfight.addBullet(bullet);
-		}
+		Bullet bullet = new Bullet(new AffineTransform(transform), angle);
+		Dogfight.addBullet(bullet);
 	}
 
 	public void setAngle(int angle){
@@ -275,7 +267,8 @@ public class Airplane{
 		else{
 			g2d.drawImage(plane, transform, i);
 		}
-		//		g2d.draw(hitbox);
+		g2d.setColor(Color.RED);
+		g2d.drawPolygon(hitbox);
 	}
 
 }

@@ -44,7 +44,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		JFrame frame = new JFrame("Dogfight!");
 		frame.setBounds(200, 100, 1000, 700);
 		panel = new Dogfight();
-		frame.setFocusable(true);
 		frame.getContentPane().add(panel);
 		panel.setBackground(Color.WHITE);
 		frame.addKeyListener(panel);
@@ -63,8 +62,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		started = true;
 		while(started == true){
-			frame.setFocusable(true);
-			frame.requestFocus();
+			
 			//Airplane movement
 			if(w == true){
 				plane1.rotate(planeRotation);
@@ -100,14 +98,13 @@ public class Dogfight extends JPanel implements KeyListener{
 			//Move bullets, happens before planes move so they don't run into their own bullets
 			for(int i = 0; i < bullets.size(); i++){
 				bullets.get(i).move();
-				if(!bullets.get(i).getHitbox().intersects(bounds)){
-				}
 			}
 			
 			
 			plane1.move();
 			plane2.move();
 			
+
 			//Delay between loops
 			try {
 				Thread.sleep(50);
@@ -124,6 +121,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println("keyPressed");
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_W){
 			if(s != true){

@@ -70,14 +70,10 @@ public class Bullet extends JPanel{
 		hitbox = new Polygon(xTrans, yTrans, 4);
 	}
 	
-	public Polygon getHitbox(){
-		return hitbox;
-	}
-	
 	public void paint(Graphics g){
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.RED);
-//		g2d.drawImage(bullet, transform, this);
+		g2d.drawImage(bullet, transform, this);
 		g.drawPolygon(hitbox);
 	}
 

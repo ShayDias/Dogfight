@@ -11,7 +11,7 @@ public class Airplane{
 
 	private Image plane;
 	private boolean isP1 = true;
-	private int speed = 5;
+	private int speed = 6;
 	private int[] xs, ys;
 	private double[] src;
 	double[] dst = new double[8];
@@ -21,17 +21,13 @@ public class Airplane{
 	private int health;
 	private AffineTransform transform;
 	private AffineTransform t;
-	private boolean flying = true;
-	private boolean turning = false;
+	private boolean flying;
 	private int rotation = 8;
-	private int canShoot;
 
 	//private int bombs = 3;
 
 
 	public Airplane(Image plane, boolean isP1){
-		flying = true;
-		canShoot = 0;
 		this.plane = plane.getScaledInstance(80, 25, 100);
 		transform = new AffineTransform();
 		health = 100;
@@ -64,13 +60,14 @@ public class Airplane{
 
 	//Changes the speed without going over or under by too much
 	public void changeSpeed(int change){
-		if(speed + change <= 4 && speed + change > 1){
+		if(speed + change <= 8 && speed + change > 2){
 			speed += change;
 		}
 	}
 
 	//Moves the plane based on speed
 	public void move(){
+		flying = true;
 		transform.translate(-(2 * speed), 0);
 		src = new double[]{
 				xs[0], ys[0],
@@ -95,49 +92,7 @@ public class Airplane{
 
 	private void crash(){
 		flying = false;
-		if(isP1 == false){
-			this.rotate(30 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e2) {
-				e2.printStackTrace();
-			}
-			this.rotate(60 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			this.rotate(90 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		else{
-			this.rotate(210 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e2) {
-				e2.printStackTrace();
-			}
-			this.rotate(240 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			this.rotate(270 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-
-		speed = 15;
+		this.rotate(270 - angle);
 	}
 
 	public void takeHit(int healthLost){
@@ -161,23 +116,7 @@ public class Airplane{
 		hitbox = new Polygon(xTrans, yTrans, 4);
 		Dogfight.panel.repaint();
 	}
-
-	public void rotateDown(){
-		angle -= rotation;
-		transform.rotate(Math.toRadians(-rotation));
-		src = new double[]{
-				xs[0], ys[0],
-				xs[1], ys[1],
-				xs[2], ys[2],
-				xs[3], ys[3]};
-		t = new AffineTransform(transform);
-		t.transform(src, 0, dst, 0, 4);
-		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
-		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
-		hitbox = new Polygon(xTrans, yTrans, 4);
-		Dogfight.panel.repaint();
-	}
-
+	
 	public void rotate(int rotation){
 		angle += rotation;
 		transform.rotate(Math.toRadians(rotation));
@@ -194,17 +133,11 @@ public class Airplane{
 		Dogfight.panel.repaint();
 	}
 
-
+	
 	//Creates a new bullet
 	public void shoot(){
-		canShoot++;
-		if(canShoot > 6){
-			canShoot = 0;
-		}
-		if(canShoot == 0){
-			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
-			Dogfight.addBullet(bullet);
-		}
+		Bullet bullet = new Bullet(new AffineTransform(transform), angle);
+		Dogfight.addBullet(bullet);
 	}
 
 	public void setAngle(int angle){
@@ -264,7 +197,7 @@ public class Airplane{
 	public int getHealth(){
 		return health;
 	}
-
+	
 	public void draw(Graphics g, ImageObserver i){
 		Graphics2D g2d = (Graphics2D)g;
 
@@ -275,7 +208,8 @@ public class Airplane{
 		else{
 			g2d.drawImage(plane, transform, i);
 		}
-		//		g2d.draw(hitbox);
+		g2d.setColor(Color.RED);
+		g2d.drawPolygon(hitbox);
 	}
 
 }

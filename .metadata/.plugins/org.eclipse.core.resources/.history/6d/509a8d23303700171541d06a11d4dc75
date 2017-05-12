@@ -20,15 +20,14 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
 
-	public static final Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
-	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 100); 
+	public final Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
+	public final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 100); 
 	private static Image background = new ImageIcon("background.png").getImage();
 
-	private static boolean w = false, a = false, s = false, d = false, space = false;
-	private static boolean up = false, down = false, left = false, right = false, slash = false;
-	private static final int planeRotation = 8;
+	private boolean w = false, a = false, s = false, d = false, space = false;
+	private boolean up = false, down = false, left = false, right = false, slash = false;
 
-	public static Menu menu;
+	public Menu menu;
 	public static boolean started = false;
 
 
@@ -45,6 +44,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setBounds(200, 100, 1000, 700);
 		panel = new Dogfight();
 		frame.setFocusable(true);
+		frame.requestFocus();
 		frame.getContentPane().add(panel);
 		panel.setBackground(Color.WHITE);
 		frame.addKeyListener(panel);
@@ -58,59 +58,102 @@ public class Dogfight extends JPanel implements KeyListener{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		menu = new Menu();
-		menu.countdown();
+		panel.menu = new Menu();
+		panel.menu.countdown();
 
 		started = true;
 		while(started == true){
-			frame.setFocusable(true);
-			frame.requestFocus();
+
 			//Airplane movement
-			if(w == true){
-				plane1.rotate(planeRotation);
-			}
-			if(a == true){
-				plane1.changeSpeed(-1);
-			}
-			if(s == true){
-				plane1.rotate(-planeRotation);
-			}
-			if(d == true){
-				plane1.changeSpeed(1);
-			}
-			if(up == true){
-				plane2.rotate(planeRotation);
-			}
-			if(down == true){
-				plane2.rotate(-planeRotation);
-			}
-			if(left == true){
-				plane2.changeSpeed(-1);
-			}
-			if(right == true){
-				plane2.changeSpeed(1);
-			}
-			if(space == true){
-				plane1.shoot();
-			}
-			if(slash == true){
-				plane2.shoot();
-			}
-			
-			//Move bullets, happens before planes move so they don't run into their own bullets
-			for(int i = 0; i < bullets.size(); i++){
-				bullets.get(i).move();
-				if(!bullets.get(i).getHitbox().intersects(bounds)){
+			if(panel.w == true){
+				if(plane1.getFlying() == true){
+					plane1.rotate();
 				}
 			}
-			
-			
+			if(panel.a == true){
+				if(plane1.getFlying() == true){
+					plane1.changeSpeed(-1);
+				}
+			}
+			if(panel.s == true){
+				if(plane1.getFlying() == true){
+					plane1.rotateDown();
+				}
+			}
+			if(panel.d == true){
+				if(plane1.getFlying() == true){
+					plane1.changeSpeed(1);
+				}
+			}
+			if(panel.up == true){
+				if(plane2.getFlying() == true){
+					plane2.rotate();
+				}
+			}
+			if(panel.down == true){
+				if(plane2.getFlying() == true){
+					plane2.rotateDown();
+				}
+			}
+			if(panel.left == true){
+				if(plane2.getFlying() == true){
+					plane2.changeSpeed(-1);
+				}
+			}
+			if(panel.right == true){
+				if(plane2.getFlying() == true){
+					plane2.changeSpeed(1);
+				}
+			}
+			if(panel.space == true){
+				if(plane1.getFlying() == true){
+					plane1.shoot();
+				}
+			}
+			if(panel.slash == true){
+				if(plane2.getFlying() == true){
+					plane2.shoot();
+				}
+			}
+
+			//Move bullets, happens before planes move so they don't run into their own bullets
+			for(int i = 0; i < bullets.size(); i++){
+				boolean bulletHit = false;
+				bullets.get(i).move();
+				if(bullets.get(i).getHitbox().intersects(plane1.getHitbox().getBounds2D())){
+					bulletHit = true;
+					if(plane1.getFlying() == true){
+						plane1.takeHit(Bullet.getDamage());
+					}
+				}
+				else if(bullets.get(i).getHitbox().intersects(plane2.getHitbox().getBounds2D())){
+					bulletHit = true;
+					if(plane2.getFlying() == true){
+						plane2.takeHit(Bullet.getDamage());
+					}
+				}
+				if(!bullets.get(i).getHitbox().intersects(panel.bounds)){
+					bullets.get(i).delete();
+				}
+				if(bulletHit == true){
+					bullets.get(i).setImage(null);;
+				}
+			}
+
+			if(!plane1.getHitbox().intersects(panel.bounds)){
+
+			}
+			if(!plane1.getHitbox().intersects(panel.bounds)){
+
+			}
+
 			plane1.move();
 			plane2.move();
-			
+
+
 			//Delay between loops
 			try {
-				Thread.sleep(50);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -214,11 +257,11 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
-	
+
 	public static void addBullet(Bullet bullet){
 		bullets.add(bullet);
 	}
-	
+
 	public static void removeBullet(Bullet bullet){
 		bullets.remove(bullet);
 		bullet = new Bullet();
@@ -227,7 +270,7 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static void setBackground(Image image){
 		background = image;
 	}
-	
+
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
 
@@ -236,6 +279,10 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		//plane2
 		plane2.draw(g, this);
+
+		//plane1 Health
+
+
 
 		if(started == true){ //If the game has been started
 			for(int i = 0; i < bullets.size(); i++){

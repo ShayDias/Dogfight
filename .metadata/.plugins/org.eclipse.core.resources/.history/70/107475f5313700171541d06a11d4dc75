@@ -11,7 +11,7 @@ public class Airplane{
 
 	private Image plane;
 	private boolean isP1 = true;
-	private int speed = 5;
+	private int speed = 1;
 	private int[] xs, ys;
 	private double[] src;
 	double[] dst = new double[8];
@@ -24,14 +24,13 @@ public class Airplane{
 	private boolean flying = true;
 	private boolean turning = false;
 	private int rotation = 8;
-	private int canShoot;
+	private boolean canShoot;
 
 	//private int bombs = 3;
 
 
 	public Airplane(Image plane, boolean isP1){
 		flying = true;
-		canShoot = 0;
 		this.plane = plane.getScaledInstance(80, 25, 100);
 		transform = new AffineTransform();
 		health = 100;
@@ -135,8 +134,8 @@ public class Airplane{
 				e.printStackTrace();
 			}
 		}
-
-
+		
+		
 		speed = 15;
 	}
 
@@ -197,14 +196,8 @@ public class Airplane{
 
 	//Creates a new bullet
 	public void shoot(){
-		canShoot++;
-		if(canShoot > 6){
-			canShoot = 0;
-		}
-		if(canShoot == 0){
-			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
-			Dogfight.addBullet(bullet);
-		}
+		Bullet bullet = new Bullet(new AffineTransform(transform), angle);
+		Dogfight.addBullet(bullet);
 	}
 
 	public void setAngle(int angle){
@@ -275,7 +268,7 @@ public class Airplane{
 		else{
 			g2d.drawImage(plane, transform, i);
 		}
-		//		g2d.draw(hitbox);
+//		g2d.draw(hitbox);
 	}
 
 }

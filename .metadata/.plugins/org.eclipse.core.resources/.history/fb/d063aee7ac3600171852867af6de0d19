@@ -11,8 +11,6 @@ import java.awt.geom.AffineTransform;
 
 public class Bullet extends JPanel{
 
-	private int x, y;
-	private int angle;
 	public static final int SIZE = 5;
 	private int speed = 60;
 	private Polygon hitbox;
@@ -47,12 +45,22 @@ public class Bullet extends JPanel{
 		bullet = null;
 	}
 
-//	public Polygon getHitbox(){
-//		
-//	}
+	public Polygon getHitbox(){
+		return hitbox;
+	}
 	
-	public void exitFrame(){
+	public void delete(){
 		Dogfight.removeBullet(this);
+		t = null;
+		transform = null;
+		bullet = null;
+		speed = 60;
+		hitbox;
+		xs, ys;
+		src;
+		dst;
+		xTrans = null;
+		yTrans = null;
 	}
 	
 	//Moves the bullet at a constant rate
@@ -70,14 +78,10 @@ public class Bullet extends JPanel{
 		hitbox = new Polygon(xTrans, yTrans, 4);
 	}
 	
-	public Polygon getHitbox(){
-		return hitbox;
-	}
-	
 	public void paint(Graphics g){
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.RED);
-//		g2d.drawImage(bullet, transform, this);
+		g2d.drawImage(bullet, transform, this);
 		g.drawPolygon(hitbox);
 	}
 

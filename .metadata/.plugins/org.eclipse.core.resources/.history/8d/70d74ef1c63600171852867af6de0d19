@@ -11,8 +11,6 @@ import java.awt.geom.AffineTransform;
 
 public class Bullet extends JPanel{
 
-	private int x, y;
-	private int angle;
 	public static final int SIZE = 5;
 	private int speed = 60;
 	private Polygon hitbox;
@@ -23,9 +21,10 @@ public class Bullet extends JPanel{
 	private int[] xTrans, yTrans;
 	private Image bullet = new ImageIcon("bullet.png").getImage();
 	private AffineTransform t;
+	private final int bulletDmg = 5;
 	
 	public Bullet(AffineTransform transform, int angle){
-		transform.translate(90, 15);
+		transform.translate(40, 15);
 		transform.scale(-1, 1);
 		bullet = bullet.getScaledInstance(20, 5, 100);
 		this.transform = transform;
@@ -47,12 +46,22 @@ public class Bullet extends JPanel{
 		bullet = null;
 	}
 
-//	public Polygon getHitbox(){
-//		
-//	}
+	public Polygon getHitbox(){
+		return hitbox;
+	}
 	
-	public void exitFrame(){
+	public void delete(){
 		Dogfight.removeBullet(this);
+		t = null;
+		transform = null;
+		bullet = null;
+		hitbox = null;
+		xs = null; 
+		ys = null;
+		src = null;
+		dst = null;
+		xTrans = null;
+		yTrans = null;
 	}
 	
 	//Moves the bullet at a constant rate
@@ -70,14 +79,12 @@ public class Bullet extends JPanel{
 		hitbox = new Polygon(xTrans, yTrans, 4);
 	}
 	
-	public Polygon getHitbox(){
-		return hitbox;
-	}
+	public static int getDamage();
 	
 	public void paint(Graphics g){
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.RED);
-//		g2d.drawImage(bullet, transform, this);
+		g2d.drawImage(bullet, transform, this);
 		g.drawPolygon(hitbox);
 	}
 
