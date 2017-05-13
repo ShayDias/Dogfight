@@ -234,6 +234,7 @@ public class Airplane{
 
 		if(hitbox.getBounds().getY() < 0){
 			if(isP1 == true){
+				System.out.println("turned");
 				transform.translate(100, 0);
 				transform.rotate(Math.toRadians(270 - angle));
 				angle = 270;
@@ -245,21 +246,21 @@ public class Airplane{
 			}
 		}
 
-		else if(hitbox.getBounds().getX() > bounds.getWidth()){
-			if(isP1 == true){
-				transform.setToRotation(Math.toRadians(0));
-			}
-			else{
-				transform.setToRotation(Math.toRadians(180));
-			}
-			transform.translate(-bounds.getWidth(), 0);
-			transform.rotate(Math.toRadians(angle));
-		}
-		else if(hitbox.getBounds().getX() < 0){
-			transform.setToRotation(0);
-			transform.translate(bounds.getWidth() + 40, 0);
-			transform.rotate(Math.toRadians(angle));
-		}
+		//		if(hitbox.getBounds().getX() > bounds.getWidth()){
+		//			if(isP1 == true){
+		//				transform.setToRotation(Math.toRadians(0));
+		//			}
+		//			else{
+		//				transform.setToRotation(Math.toRadians(180));
+		//			}
+		//			transform.translate(-bounds.getWidth(), 0);
+		//			transform.rotate(Math.toRadians(angle));
+		//		}
+		//		else if(hitbox.getBounds().getX() < 0){
+		//			transform.setToRotation(0);
+		//			transform.translate(bounds.getWidth() + 40, 0);
+		//			transform.rotate(Math.toRadians(angle));
+		//		}
 
 
 		//Hitboxes

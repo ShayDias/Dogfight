@@ -25,7 +25,7 @@ public class Airplane{
 	private boolean flying = true;
 	private int rotation = 8;
 	private int canShoot;
-	private Sounds sounds = new Sounds();
+	private KList sounds = new KList();
 
 	//private int bombs = 3;
 
@@ -201,9 +201,7 @@ public class Airplane{
 		canShoot++;
 		if(canShoot > 6){
 			canShoot = 0;
-			if(isP1 == true){
-				sounds.playSound();
-			}
+			sounds.playSound();
 		}
 		if(canShoot == 0){
 			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
@@ -231,27 +229,8 @@ public class Airplane{
 	}
 
 	public void returnToMap(Rectangle bounds){
-
-		if(hitbox.getBounds().getY() < 0){
-			if(isP1 == true){
-				transform.translate(100, 0);
-				transform.rotate(Math.toRadians(270 - angle));
-				angle = 270;
-			}
-			else{
-				transform.translate(-90, 0);
-				transform.rotate(Math.toRadians(90 - angle));
-				angle = 90;
-			}
-		}
-
-		else if(hitbox.getBounds().getX() > bounds.getWidth()){
-			if(isP1 == true){
-				transform.setToRotation(Math.toRadians(0));
-			}
-			else{
-				transform.setToRotation(Math.toRadians(180));
-			}
+		if(hitbox.getBounds().getX() > bounds.getWidth()){
+			transform.setToRotation(0);
 			transform.translate(-bounds.getWidth(), 0);
 			transform.rotate(Math.toRadians(angle));
 		}
@@ -260,8 +239,14 @@ public class Airplane{
 			transform.translate(bounds.getWidth() + 40, 0);
 			transform.rotate(Math.toRadians(angle));
 		}
-
-
+		if(hitbox.getBounds().getY() < 0){
+			transform.rotate(Math.toRadians(360 - angle));
+			angle += 360 - angle;
+			transform.translate(10, 0);
+		}
+		
+		
+		
 		//Hitboxes
 		src = new double[]{
 				xs[0], ys[0],

@@ -91,11 +91,13 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 			if(panel.space == true){
 				panel.plane1.shoot();
+				KList.playSound2();
 			}
 			if(panel.slash == true){
 				panel.plane2.shoot();
+				KList.playSound();
 			}
-
+			
 			//Move bullets, happens before planes move so they don't run into their own bullets
 			for(int i = 0; i < panel.bullets.size(); i++){
 				panel.bullets.get(i).move();
@@ -110,17 +112,17 @@ public class Dogfight extends JPanel implements KeyListener{
 					panel.bullets.get(i).setImage(null);
 				}
 			}
-
+			
 			if(!panel.plane1.getHitbox().intersects(bounds)){
 				panel.plane1.returnToMap(bounds);
 			}
 			if(!panel.plane2.getHitbox().intersects(bounds)){
 				panel.plane2.returnToMap(bounds);
 			}
-
+			
 			panel.plane1.move();
 			panel.plane2.move();
-
+			
 			//Delay between loops
 			try {
 				Thread.sleep(50);
@@ -227,11 +229,11 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
-
+	
 	public static void addBullet(Bullet bullet){
 		panel.bullets.add(bullet);
 	}
-
+	
 	public void removeBullet(Bullet bullet){
 		panel.bullets.remove(bullet);
 		bullet = new Bullet();
@@ -240,7 +242,7 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static void setBackground(Image image){
 		background = image;
 	}
-
+	
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
 
@@ -249,8 +251,8 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		//plane2
 		plane2.draw(g, this);
-
-
+		
+		
 		//Health
 		int p1H = plane1.getHealth();
 		int p2H = plane2.getHealth();
@@ -268,7 +270,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		g.setColor(Color.RED);
 		g.fillRect(WIDTH - 110, 5, p2H, 10);
 
-
+		
 		if(started == true){ //If the game has been started
 			for(int i = 0; i < bullets.size(); i++){
 				bullets.get(i).paint(g);

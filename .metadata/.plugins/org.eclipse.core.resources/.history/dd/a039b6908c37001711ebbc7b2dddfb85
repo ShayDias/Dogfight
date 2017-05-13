@@ -42,7 +42,6 @@ public class Bullet extends JPanel{
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
 		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
 		hitbox = new Polygon(xTrans, yTrans, 4);
-		Dogfight.panel.repaint();
 	}
 	
 	public Bullet() {
