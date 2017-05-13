@@ -26,7 +26,7 @@ public class Bullet extends JPanel{
 	private int damage = 5;
 	
 	public Bullet(AffineTransform transform, int angle){
-		transform.translate(25, 15);
+		transform.translate(90, 15);
 		transform.scale(-1, 1);
 		bullet = bullet.getScaledInstance(20, 5, 100);
 		this.transform = transform;
@@ -69,10 +69,6 @@ public class Bullet extends JPanel{
 	
 	public Polygon getHitbox(){
 		return hitbox;
-	}
-	
-	public void setImage(Image image){
-		bullet = image;
 	}
 	
 	public void delete(){

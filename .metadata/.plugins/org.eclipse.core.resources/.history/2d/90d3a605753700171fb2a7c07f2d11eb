@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 public class Dogfight extends JPanel implements KeyListener{
 
-	private Airplane plane1, plane2;
-	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	private static Airplane plane1, plane2;
+	private static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	public static Dogfight panel;
 
 	public static final int WIDTH = 1000;
@@ -24,8 +24,9 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 100); 
 	private static Image background = new ImageIcon("background.png").getImage();
 
-	private boolean w = false, a = false, s = false, d = false, space = false;
-	private boolean up = false, down = false, left = false, right = false, slash = false;
+	private static boolean w = false, a = false, s = false, d = false, space = false;
+	private static boolean up = false, down = false, left = false, right = false, slash = false;
+	private static final int planeRotation = 8;
 
 	public static Menu menu;
 	public static boolean started = false;
@@ -65,55 +66,47 @@ public class Dogfight extends JPanel implements KeyListener{
 			frame.setFocusable(true);
 			frame.requestFocus();
 			//Airplane movement
-			if(panel.w == true){
-				panel.plane1.rotate();
+			if(w == true){
+				plane1.rotate(planeRotation);
 			}
-			if(panel.a == true){
-				panel.plane1.changeSpeed(-1);
+			if(a == true){
+				plane1.changeSpeed(-1);
 			}
-			if(panel.s == true){
-				panel.plane1.rotateDown();
+			if(s == true){
+				plane1.rotate(-planeRotation);
 			}
-			if(panel.d == true){
-				panel.plane1.changeSpeed(1);
+			if(d == true){
+				plane1.changeSpeed(1);
 			}
-			if(panel.up == true){
-				panel.plane2.rotate();
+			if(up == true){
+				plane2.rotate(planeRotation);
 			}
-			if(panel.down == true){
-				panel.plane2.rotateDown();
+			if(down == true){
+				plane2.rotate(-planeRotation);
 			}
-			if(panel.left == true){
-				panel.plane2.changeSpeed(-1);
+			if(left == true){
+				plane2.changeSpeed(-1);
 			}
-			if(panel.right == true){
-				panel.plane2.changeSpeed(1);
+			if(right == true){
+				plane2.changeSpeed(1);
 			}
-			if(panel.space == true){
-				panel.plane1.shoot();
+			if(space == true){
+				plane1.shoot();
 			}
-			if(panel.slash == true){
-				panel.plane2.shoot();
+			if(slash == true){
+				plane2.shoot();
 			}
 			
 			//Move bullets, happens before planes move so they don't run into their own bullets
-			for(int i = 0; i < panel.bullets.size(); i++){
-				panel.bullets.get(i).move();
-				if(!panel.bullets.get(i).getHitbox().intersects(bounds)){
-				}
-				if(panel.bullets.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
-					panel.plane1.takeHit(panel.bullets.get(i).getDmg());
-					panel.bullets.get(i).setImage(null);
-				}
-				if(panel.bullets.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
-					panel.plane2.takeHit(panel.bullets.get(i).getDmg());
-					panel.bullets.get(i).setImage(null);
+			for(int i = 0; i < bullets.size(); i++){
+				bullets.get(i).move();
+				if(!bullets.get(i).getHitbox().intersects(bounds)){
 				}
 			}
 			
 			
-			panel.plane1.move();
-			panel.plane2.move();
+			plane1.move();
+			plane2.move();
 			
 			//Delay between loops
 			try {
@@ -223,11 +216,11 @@ public class Dogfight extends JPanel implements KeyListener{
 
 	
 	public static void addBullet(Bullet bullet){
-		panel.bullets.add(bullet);
+		bullets.add(bullet);
 	}
 	
-	public void removeBullet(Bullet bullet){
-		panel.bullets.remove(bullet);
+	public static void removeBullet(Bullet bullet){
+		bullets.remove(bullet);
 		bullet = new Bullet();
 	}
 
@@ -243,34 +236,12 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		//plane2
 		plane2.draw(g, this);
-		
-		
-		//Health
-		int p1H = plane1.getHealth();
-		int p2H = plane2.getHealth();
-		if(p1H < 0){
-			p1H = 0;
-		}
-		if(p2H < 0){
-			p2H = 0;
-		}
-		
-		g.setColor(Color.BLACK);
-		g.drawRect(10, 5, 100, 10);
-		g.drawRect(WIDTH - 110, 5, 100, 10);
-		g.setColor(Color.BLUE);
-		g.fillRect(10, 5, p1H, 10);
-		g.drawString("P1:", 0, 0);
-		g.setColor(Color.RED);
-		g.drawString(":P2", WIDTH - 10, 0);
-		g.fillRect(WIDTH - 110, 5, p2H, 10);
-		
-		
 
 		if(started == true){ //If the game has been started
 			for(int i = 0; i < bullets.size(); i++){
 				bullets.get(i).paint(g);
 			}
+
 		}
 		else{
 			if(Menu.counting == true){

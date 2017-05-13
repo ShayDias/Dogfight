@@ -23,10 +23,9 @@ public class Bullet extends JPanel{
 	private int[] xTrans, yTrans;
 	private Image bullet = new ImageIcon("bullet.png").getImage();
 	private AffineTransform t;
-	private int damage = 5;
 	
 	public Bullet(AffineTransform transform, int angle){
-		transform.translate(25, 15);
+		transform.translate(90, 15);
 		transform.scale(-1, 1);
 		bullet = bullet.getScaledInstance(20, 5, 100);
 		this.transform = transform;
@@ -52,6 +51,10 @@ public class Bullet extends JPanel{
 //		
 //	}
 	
+	public void exitFrame(){
+		Dogfight.removeBullet(this);
+	}
+	
 	//Moves the bullet at a constant rate
 	public void move(){
 		transform.translate(speed, 0);
@@ -69,22 +72,6 @@ public class Bullet extends JPanel{
 	
 	public Polygon getHitbox(){
 		return hitbox;
-	}
-	
-	public void setImage(Image image){
-		bullet = image;
-	}
-	
-	public void delete(){
-		Dogfight.panel.removeBullet(this);
-		bullet = null;
-		transform = null;
-		t = null;
-		hitbox = null;
-	}
-	
-	public int getDmg(){
-		return damage;
 	}
 	
 	public void paint(Graphics g){

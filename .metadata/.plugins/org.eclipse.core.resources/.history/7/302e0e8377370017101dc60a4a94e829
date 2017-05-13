@@ -13,21 +13,19 @@ import javax.swing.JPanel;
 
 public class Dogfight extends JPanel implements KeyListener{
 
-	private static Airplane plane1, plane2;
-	private static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	private Airplane plane1, plane2;
+	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	public static Dogfight panel;
 
-	public final int WIDTH = 1000;
-	public final int HEIGHT = 700;
+	public static final int WIDTH = 1000;
+	public static final int HEIGHT = 700;
 
-	public static final Rectangle bounds = new Rectangle(0, 0, panel.WIDTH, panel.HEIGHT);
-	public static final Rectangle ground = new Rectangle(0, panel.HEIGHT - 100, panel.WIDTH, 100); 
+	public static final Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
+	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 100); 
 	private static Image background = new ImageIcon("background.png").getImage();
 
 	private boolean w = false, a = false, s = false, d = false, space = false;
 	private boolean up = false, down = false, left = false, right = false, slash = false;
-	private static final int planeRotation = 8;
-	private final static int bulletDmg = 5;
 
 	public static Menu menu;
 	public static boolean started = false;
@@ -46,7 +44,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setBounds(200, 100, 1000, 700);
 		panel = new Dogfight();
 		frame.setFocusable(true);
-		frame.requestFocus();
 		frame.getContentPane().add(panel);
 		panel.setBackground(Color.WHITE);
 		frame.addKeyListener(panel);
@@ -65,87 +62,62 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		started = true;
 		while(started == true){
-
+			frame.setFocusable(true);
+			frame.requestFocus();
 			//Airplane movement
 			if(panel.w == true){
-				if(plane1.getFlying() == true){
-					plane1.rotate(planeRotation);
-				}
+				panel.plane1.rotate();
 			}
 			if(panel.a == true){
-				if(plane1.getFlying() == true){
-					plane1.changeSpeed(-1);
-				}
+				panel.plane1.changeSpeed(-1);
 			}
 			if(panel.s == true){
-				if(plane1.getFlying() == true){
-					plane1.rotate(-planeRotation);
-				}
+				panel.plane1.rotateDown();
 			}
 			if(panel.d == true){
-				if(plane1.getFlying() == true){
-					plane1.changeSpeed(1);
-				}
+				panel.plane1.changeSpeed(1);
 			}
 			if(panel.up == true){
-				if(plane2.getFlying() == true){
-					plane2.rotate(planeRotation);
-				}
+				panel.plane2.rotate();
 			}
 			if(panel.down == true){
-				if(plane2.getFlying() == true){
-					plane2.rotate(-planeRotation);
-				}
+				panel.plane2.rotateDown();
 			}
 			if(panel.left == true){
-				if(plane2.getFlying() == true){
-					plane2.changeSpeed(-1);
-				}
+				panel.plane2.changeSpeed(-1);
 			}
 			if(panel.right == true){
-				if(plane2.getFlying() == true){
-					plane2.changeSpeed(1);
-				}
+				panel.plane2.changeSpeed(1);
 			}
 			if(panel.space == true){
-				if(plane1.getFlying() == true){
-					plane1.shoot();
-				}
+				panel.plane1.shoot();
 			}
 			if(panel.slash == true){
-				if(plane2.getFlying() == true){
-					plane2.shoot();
-				}
+				panel.plane2.shoot();
 			}
-
+			
 			//Move bullets, happens before planes move so they don't run into their own bullets
-			for(int i = 0; i < bullets.size(); i++){
-				bullets.get(i).move();
-				if(bullets.get(i).getHitbox().intersects(plane1.getHitbox().getBounds2D())){
-					plane1.takeHit(bulletDmg);
+			for(int i = 0; i < panel.bullets.size(); i++){
+				panel.bullets.get(i).move();
+				if(!panel.bullets.get(i).getHitbox().intersects(bounds)){
 				}
-				else if(bullets.get(i).getHitbox().intersects(plane2.getHitbox().getBounds2D())){
-					plane2.takeHit(bulletDmg);
+				if(panel.bullets.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
+					panel.plane1.takeHit(panel.bullets.get(i).getDmg());
+					panel.bullets.get(i).setImage(null);
 				}
-				if(!bullets.get(i).getHitbox().intersects(bounds)){
-					bullets.get(i).delete();
+				if(panel.bullets.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
+					panel.plane2.takeHit(panel.bullets.get(i).getDmg());
+					panel.bullets.get(i).setImage(null);
 				}
 			}
-
-			if(!plane1.getHitbox().intersects(bounds)){
-
-			}
-			if(!plane1.getHitbox().intersects(bounds)){
-
-			}
-
-			plane1.move();
-			plane2.move();
-
-
+			
+			
+			panel.plane1.move();
+			panel.plane2.move();
+			
 			//Delay between loops
 			try {
-				Thread.sleep(100);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -249,20 +221,20 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
-
+	
 	public static void addBullet(Bullet bullet){
-		bullets.add(bullet);
+		panel.bullets.add(bullet);
 	}
-
-	public static void removeBullet(Bullet bullet){
-		bullets.remove(bullet);
+	
+	public void removeBullet(Bullet bullet){
+		panel.bullets.remove(bullet);
 		bullet = new Bullet();
 	}
 
 	public static void setBackground(Image image){
 		background = image;
 	}
-
+	
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
 
@@ -276,8 +248,13 @@ public class Dogfight extends JPanel implements KeyListener{
 			for(int i = 0; i < bullets.size(); i++){
 				bullets.get(i).paint(g);
 			}
-
 		}
+		
+		g.setColor(Color.BLUE);
+		g.drawString("P1: " + panel.plane1.getHealth(), 0, 0);
+		g.drawString("P2: " + panel.plane2.getHealth(), WIDTH - 30, 0);
+
+		
 		else{
 			if(Menu.counting == true){
 				g.setColor(Color.RED);

@@ -263,7 +263,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		g.drawString("P1:", 0, 0);
 		g.setColor(Color.RED);
 		g.drawString(":P2", WIDTH - 10, 0);
-		g.fillRect(WIDTH - 110, 5, p2H, 10);
+		g.fillRect(10, 5, p2H, 10);
 		
 		
 

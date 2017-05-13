@@ -246,25 +246,12 @@ public class Dogfight extends JPanel implements KeyListener{
 		
 		
 		//Health
-		int p1H = plane1.getHealth();
-		int p2H = plane2.getHealth();
-		if(p1H < 0){
-			p1H = 0;
-		}
-		if(p2H < 0){
-			p2H = 0;
-		}
-		
 		g.setColor(Color.BLACK);
-		g.drawRect(10, 5, 100, 10);
-		g.drawRect(WIDTH - 110, 5, 100, 10);
+		g.drawRect(10, 5 100, 10);
 		g.setColor(Color.BLUE);
-		g.fillRect(10, 5, p1H, 10);
 		g.drawString("P1:", 0, 0);
 		g.setColor(Color.RED);
 		g.drawString(":P2", WIDTH - 10, 0);
-		g.fillRect(WIDTH - 110, 5, p2H, 10);
-		
 		
 
 		if(started == true){ //If the game has been started
