@@ -91,9 +91,11 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 			if(panel.space == true){
 				panel.plane1.shoot();
+				KList.playSound2();
 			}
 			if(panel.slash == true){
 				panel.plane2.shoot();
+				KList.playSound();
 			}
 			
 			//Move bullets, happens before planes move so they don't run into their own bullets
