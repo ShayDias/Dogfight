@@ -227,20 +227,12 @@ public class Airplane{
 	}
 
 	public void returnToMap(Rectangle bounds){
-		if(hitbox.getBounds().getX() > bounds.getWidth()){
-			transform.setToRotation(0);
-			transform.translate(-bounds.getWidth(), 0);
-			transform.rotate(Math.toRadians(angle));
+		if(hitbox.getBounds().getX() > 300){
+			t = transform;
+			transform.translate(-100, 0);
 		}
-		else if(hitbox.getBounds().getX() < 0){
-			transform.setToRotation(0);
+		else if(hitbox.getBounds().getX() < bounds.getWidth()){
 			transform.translate(bounds.getWidth() + 40, 0);
-			transform.rotate(Math.toRadians(angle));
-		}
-		if(hitbox.getBounds().getY() < 0){
-			transform.rotate(Math.toRadians(360 - angle));
-			angle += 360 - angle;
-			transform.translate(10, 0);
 		}
 		
 		

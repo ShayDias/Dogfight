@@ -238,8 +238,7 @@ public class Airplane{
 			transform.rotate(Math.toRadians(angle));
 		}
 		if(hitbox.getBounds().getY() < 0){
-			transform.rotate(Math.toRadians(360 - angle));
-			angle += 360 - angle;
+			transform.rotate(360 - angle);
 			transform.translate(10, 0);
 		}
 		

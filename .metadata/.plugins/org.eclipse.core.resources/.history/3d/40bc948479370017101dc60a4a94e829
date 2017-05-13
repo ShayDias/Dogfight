@@ -111,12 +111,6 @@ public class Dogfight extends JPanel implements KeyListener{
 				}
 			}
 			
-			if(!panel.plane1.getHitbox().intersects(bounds)){
-				panel.plane1.returnToMap(bounds);
-			}
-			if(!panel.plane2.getHitbox().intersects(bounds)){
-				panel.plane2.returnToMap(bounds);
-			}
 			
 			panel.plane1.move();
 			panel.plane2.move();
@@ -260,6 +254,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		if(p2H < 0){
 			p2H = 0;
 		}
+		
 		g.setColor(Color.BLACK);
 		g.drawRect(10, 5, 100, 10);
 		g.drawRect(WIDTH - 110, 5, 100, 10);
@@ -267,8 +262,16 @@ public class Dogfight extends JPanel implements KeyListener{
 		g.fillRect(10, 5, p1H, 10);
 		g.setColor(Color.RED);
 		g.fillRect(WIDTH - 110, 5, p2H, 10);
+		
+		g.setColor(Color.black);
+		g.setFont(new Font("Serif", Font.BOLD, 10));
+		g.drawString("P1", 50, 0);
+		g.drawString("P2", WIDTH - 60, 0);
+
 
 		
+		
+
 		if(started == true){ //If the game has been started
 			for(int i = 0; i < bullets.size(); i++){
 				bullets.get(i).paint(g);

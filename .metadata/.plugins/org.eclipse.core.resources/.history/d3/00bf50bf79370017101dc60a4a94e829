@@ -111,12 +111,6 @@ public class Dogfight extends JPanel implements KeyListener{
 				}
 			}
 			
-			if(!panel.plane1.getHitbox().intersects(bounds)){
-				panel.plane1.returnToMap(bounds);
-			}
-			if(!panel.plane2.getHitbox().intersects(bounds)){
-				panel.plane2.returnToMap(bounds);
-			}
 			
 			panel.plane1.move();
 			panel.plane2.move();
