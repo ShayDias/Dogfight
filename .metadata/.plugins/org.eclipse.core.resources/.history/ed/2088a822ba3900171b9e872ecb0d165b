@@ -20,14 +20,14 @@ public class Bomb{
 		x = (int) (startPos.getX() + startPos.getWidth()/2);
 		y = (int)(startPos.getY() + startPos.getHeight() + 10);
 		bomb = new ImageIcon("bomb.png").getImage();
-		bomb = bomb.getScaledInstance(10, 30, 100);
+		bomb = bomb.getScaledInstance(10, -30, 100);
 		hitbox = new Rectangle(x, y, bomb.getWidth(null), bomb.getHeight(null));
 	}
 	
 	
 	public void move(){
-		y += 10;
-		hitbox.translate(0, 10);
+		y -= 10;
+		hitbox.translate(0, -10);
 	}
 	
 	public void explode(){

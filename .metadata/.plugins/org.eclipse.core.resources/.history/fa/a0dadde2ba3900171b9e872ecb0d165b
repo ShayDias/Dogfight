@@ -15,7 +15,7 @@ public class Airplane{
 	private int speed = 5;
 	private int[] xs, ys;
 	private double[] src;
-	private double[] dst = new double[8];
+	double[] dst = new double[8];
 	private int[] xTrans, yTrans;
 	private int angle;
 	private Polygon hitbox;
@@ -24,7 +24,7 @@ public class Airplane{
 	private AffineTransform t;
 	private boolean flying = true, moving = true;
 	private int rotation = 8;
-	private int canShoot, canBomb, numBombs;
+	private int canShoot, canBomb;
 	private Sounds sounds = new Sounds();
 
 	//private int bombs = 3;
@@ -34,8 +34,6 @@ public class Airplane{
 		flying = true;
 		moving = true;
 		canShoot = 0;
-		canBomb = 0;
-		numBombs = 3;
 		this.plane = plane.getScaledInstance(80, 25, 100);
 		transform = new AffineTransform();
 		health = 100;
@@ -72,8 +70,8 @@ public class Airplane{
 			speed += change;
 		}
 	}
-
-
+	
+	
 
 	//Moves the plane based on speed
 	public void move(){
@@ -98,7 +96,7 @@ public class Airplane{
 	public boolean getFlying(){
 		return flying;
 	}
-
+	
 	public boolean getMoving(){
 		return moving;
 	}
@@ -153,7 +151,7 @@ public class Airplane{
 	public void explode(){
 		plane = new ImageIcon("explosion.gif").getImage();
 		plane.getScaledInstance(150, 150, 100);
-		//		transform.translate(30, 10);
+//		transform.translate(30, 10);
 		transform.setToRotation(Math.toRadians(0));
 		transform.translate(hitbox.getBounds2D().getX(), hitbox.getBounds2D().getY());
 		flying = false;
@@ -216,18 +214,18 @@ public class Airplane{
 
 	//Launches bomb
 	public void bomb(){
-		canBomb++;
-		if(canBomb > 10){
-			if(numBombs > 0){
-				canBomb = 0;
-				numBombs --;
+		canShoot++;
+		if(canShoot > 5){
+			canShoot = 0;
+			if(isP1 == true){
+				sounds.playSound();
 			}
-			Bomb bomb = new Bomb(hitbox.getBounds());
-			Dogfight.panel.addBomb(bomb);
 		}
+		Bomb bomb = new Bomb(hitbox.getBounds());
+		Dogfight.panel.addBomb(bomb);
 	}
-
-
+	
+	
 	//Creates a new bullet
 	public void shoot(){
 		canShoot++;
@@ -242,7 +240,7 @@ public class Airplane{
 			Dogfight.panel.addBullet(bullet);
 		}
 	}
-
+	
 	public void setAngle(int angle){
 		this.angle = angle;
 		transform.rotate(Math.toRadians(this.angle - angle));

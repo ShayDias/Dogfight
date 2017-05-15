@@ -72,8 +72,8 @@ public class Airplane{
 			speed += change;
 		}
 	}
-
-
+	
+	
 
 	//Moves the plane based on speed
 	public void move(){
@@ -98,7 +98,7 @@ public class Airplane{
 	public boolean getFlying(){
 		return flying;
 	}
-
+	
 	public boolean getMoving(){
 		return moving;
 	}
@@ -153,7 +153,7 @@ public class Airplane{
 	public void explode(){
 		plane = new ImageIcon("explosion.gif").getImage();
 		plane.getScaledInstance(150, 150, 100);
-		//		transform.translate(30, 10);
+//		transform.translate(30, 10);
 		transform.setToRotation(Math.toRadians(0));
 		transform.translate(hitbox.getBounds2D().getX(), hitbox.getBounds2D().getY());
 		flying = false;
@@ -217,17 +217,17 @@ public class Airplane{
 	//Launches bomb
 	public void bomb(){
 		canBomb++;
-		if(canBomb > 10){
-			if(numBombs > 0){
-				canBomb = 0;
-				numBombs --;
+		if(canBomb > 5){
+			canShoot = 0;
+			if(isP1 == true){
+				sounds.playSound();
 			}
-			Bomb bomb = new Bomb(hitbox.getBounds());
-			Dogfight.panel.addBomb(bomb);
 		}
+		Bomb bomb = new Bomb(hitbox.getBounds());
+		Dogfight.panel.addBomb(bomb);
 	}
-
-
+	
+	
 	//Creates a new bullet
 	public void shoot(){
 		canShoot++;
@@ -242,7 +242,7 @@ public class Airplane{
 			Dogfight.panel.addBullet(bullet);
 		}
 	}
-
+	
 	public void setAngle(int angle){
 		this.angle = angle;
 		transform.rotate(Math.toRadians(this.angle - angle));

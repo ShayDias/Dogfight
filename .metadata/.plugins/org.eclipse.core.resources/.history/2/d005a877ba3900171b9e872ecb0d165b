@@ -126,7 +126,6 @@ public class Dogfight extends JPanel implements KeyListener{
 			for(int i = 0; i < panel.bombs.size(); i ++){
 				panel.bombs.get(i).move();
 				if(!panel.bombs.get(i).getHitbox().intersects(bounds)){
-					
 				}
 				if(panel.bombs.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
 					panel.plane1.takeHit(panel.bombs.get(i).getDmg());

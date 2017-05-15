@@ -22,11 +22,11 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static final int HEIGHT = 700;
 
 	public static final Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
-	public static final Rectangle ground = new Rectangle(-1000, HEIGHT - 75, WIDTH + 1000, 800); 
+	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 800); 
 	private static Image background = new ImageIcon("background.png").getImage();
 
-	private boolean w = false, a = false, s = false, d = false, space = false, c = false;
-	private boolean up = false, down = false, left = false, right = false, slash = false, period = false;
+	private boolean w = false, a = false, s = false, d = false, space = false;
+	private boolean up = false, down = false, left = false, right = false, slash = false;
 
 	public static Menu menu;
 	public static boolean started = false;
@@ -82,9 +82,6 @@ public class Dogfight extends JPanel implements KeyListener{
 				if(panel.space == true){
 					panel.plane1.shoot();
 				}
-				if(panel.c == true){
-					panel.plane1.bomb();
-				}
 			}
 			if(panel.plane2.getFlying() == true){
 				if(panel.up == true){
@@ -102,16 +99,12 @@ public class Dogfight extends JPanel implements KeyListener{
 				if(panel.slash == true){
 					panel.plane2.shoot();
 				}
-				if(panel.period == true){
-					panel.plane2.bomb();
-				}
 			}
 
 			//Move bullets, happens before planes move so they don't run into their own bullets
 			for(int i = 0; i < panel.bullets.size(); i++){
 				panel.bullets.get(i).move();
 				if(!panel.bullets.get(i).getHitbox().intersects(bounds)){
-					panel.bullets.get(i).delete();
 				}
 				if(panel.bullets.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
 					panel.plane1.takeHit(panel.bullets.get(i).getDmg());
@@ -126,13 +119,12 @@ public class Dogfight extends JPanel implements KeyListener{
 			for(int i = 0; i < panel.bombs.size(); i ++){
 				panel.bombs.get(i).move();
 				if(!panel.bombs.get(i).getHitbox().intersects(bounds)){
-					
 				}
 				if(panel.bombs.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
 					panel.plane1.takeHit(panel.bombs.get(i).getDmg());
 					panel.bombs.get(i).explode();
 				}
-				if(panel.bombs.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
+				if(panel.bullets.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
 					panel.plane2.takeHit(panel.bombs.get(i).getDmg());
 					panel.bombs.get(i).explode();
 				}
@@ -173,7 +165,7 @@ public class Dogfight extends JPanel implements KeyListener{
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {		
+	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_W){
 			if(s != true){
@@ -221,12 +213,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		if(code == KeyEvent.VK_SLASH){
 			slash = true;
 		}
-		if(code == KeyEvent.VK_C){
-			c = true;
-		}
-		if(code == KeyEvent.VK_PERIOD){
-			period = false;
-		}
 	}
 
 	@Override
@@ -262,12 +248,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		}
 		if(code == KeyEvent.VK_SLASH){
 			slash = false;
-		}
-		if(code == KeyEvent.VK_C){
-			c = true;
-		}
-		if(code == KeyEvent.VK_PERIOD){
-			period = false;
 		}
 	}
 
@@ -331,13 +311,6 @@ public class Dogfight extends JPanel implements KeyListener{
 				bullets.get(i).paint(g, this);
 			}
 		}
-		
-		if(started == true){ //If the game has been started
-			for(int i = 0; i < bombs.size(); i++){
-				bombs.get(i).paint(g, this);
-			}
-		}
-		
 		else{
 			if(Menu.counting == true){
 				g.setColor(Color.RED);

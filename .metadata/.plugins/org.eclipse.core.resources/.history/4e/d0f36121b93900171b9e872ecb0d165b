@@ -26,8 +26,8 @@ public class Bomb{
 	
 	
 	public void move(){
-		y += 10;
-		hitbox.translate(0, 10);
+		y -= 10;
+		hitbox.translate(0, -10);
 	}
 	
 	public void explode(){
