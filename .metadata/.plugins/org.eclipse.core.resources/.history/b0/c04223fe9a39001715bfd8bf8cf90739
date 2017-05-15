@@ -1,0 +1,22 @@
+import java.awt.Rectangle;
+
+
+public class Bomb{
+
+	
+	private int damage = 100;
+	private int x, y;
+	
+	
+	public Bomb(Rectangle startPos){
+		x = (int) (startPos.getX() + startPos.getWidth()/2);
+		y = (int)(startPos.getY() + 10);
+	}
+	
+	
+	public int getDmg(){
+		return damage;
+	}
+	
+	
+}

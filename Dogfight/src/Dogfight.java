@@ -15,13 +15,14 @@ public class Dogfight extends JPanel implements KeyListener{
 
 	private Airplane plane1, plane2;
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	private ArrayList<Bomb> bombs = new ArrayList<Bomb>();
 	public static Dogfight panel;
 
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
 
 	public static final Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
-	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 100); 
+	public static final Rectangle ground = new Rectangle(0, HEIGHT - 100, WIDTH, 800); 
 	private static Image background = new ImageIcon("background.png").getImage();
 
 	private boolean w = false, a = false, s = false, d = false, space = false;
@@ -65,35 +66,39 @@ public class Dogfight extends JPanel implements KeyListener{
 			frame.setFocusable(true);
 			frame.requestFocus();
 			//Airplane movement
-			if(panel.w == true){
-				panel.plane1.rotate();
+			if(panel.plane1.getFlying() == true){
+				if(panel.w == true){
+					panel.plane1.rotate();
+				}
+				if(panel.a == true){
+					panel.plane1.changeSpeed(-1);
+				}
+				if(panel.s == true){
+					panel.plane1.rotateDown();
+				}
+				if(panel.d == true){
+					panel.plane1.changeSpeed(1);
+				}
+				if(panel.space == true){
+					panel.plane1.shoot();
+				}
 			}
-			if(panel.a == true){
-				panel.plane1.changeSpeed(-1);
-			}
-			if(panel.s == true){
-				panel.plane1.rotateDown();
-			}
-			if(panel.d == true){
-				panel.plane1.changeSpeed(1);
-			}
-			if(panel.up == true){
-				panel.plane2.rotate();
-			}
-			if(panel.down == true){
-				panel.plane2.rotateDown();
-			}
-			if(panel.left == true){
-				panel.plane2.changeSpeed(-1);
-			}
-			if(panel.right == true){
-				panel.plane2.changeSpeed(1);
-			}
-			if(panel.space == true){
-				panel.plane1.shoot();
-			}
-			if(panel.slash == true){
-				panel.plane2.shoot();
+			if(panel.plane2.getFlying() == true){
+				if(panel.up == true){
+					panel.plane2.rotate();
+				}
+				if(panel.down == true){
+					panel.plane2.rotateDown();
+				}
+				if(panel.left == true){
+					panel.plane2.changeSpeed(-1);
+				}
+				if(panel.right == true){
+					panel.plane2.changeSpeed(1);
+				}
+				if(panel.slash == true){
+					panel.plane2.shoot();
+				}
 			}
 
 			//Move bullets, happens before planes move so they don't run into their own bullets
@@ -111,6 +116,10 @@ public class Dogfight extends JPanel implements KeyListener{
 				}
 			}
 
+			for(int i = 0; i < panel.bombs.size(); i ++){
+				panel.bombs.get(i).move();
+			}
+			
 			if(!panel.plane1.getHitbox().intersects(bounds)){
 				panel.plane1.returnToMap(bounds);
 			}
@@ -118,8 +127,18 @@ public class Dogfight extends JPanel implements KeyListener{
 				panel.plane2.returnToMap(bounds);
 			}
 
-			panel.plane1.move();
-			panel.plane2.move();
+			if(panel.plane1.getHitbox().intersects(ground)){
+				panel.plane1.explode();
+			}
+			if(panel.plane2.getHitbox().intersects(ground)){
+				panel.plane2.explode();
+			}
+			if(panel.plane1.getMoving() == true){
+				panel.plane1.move();
+			}
+			if(panel.plane2.getMoving() == true){
+				panel.plane2.move();
+			}
 
 			//Delay between loops
 			try {
@@ -227,8 +246,16 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
+	
+	public void addBomb(Bomb bomb){
+		panel.bombs.add(bomb);
+	}
+	
+	public void removeBomb(Bomb bomb){
+		panel.bombs.remove(bomb);
+	}
 
-	public static void addBullet(Bullet bullet){
+	public void addBullet(Bullet bullet){
 		panel.bullets.add(bullet);
 	}
 
@@ -271,7 +298,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		if(started == true){ //If the game has been started
 			for(int i = 0; i < bullets.size(); i++){
-				bullets.get(i).paint(g);
+				bullets.get(i).paint(g, this);
 			}
 		}
 		else{

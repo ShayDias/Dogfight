@@ -6,13 +6,11 @@ import javax.swing.ImageIcon;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import javax.swing.JPanel;
 import java.awt.geom.AffineTransform;
+import java.awt.image.ImageObserver;
 
-public class Bullet extends JPanel{
+public class Bullet{
 
-	private int x, y;
-	private int angle;
 	public static final int SIZE = 5;
 	private int speed = 60;
 	private Polygon hitbox;
@@ -88,10 +86,10 @@ public class Bullet extends JPanel{
 		return damage;
 	}
 	
-	public void paint(Graphics g){
+	public void paint(Graphics g, ImageObserver i){
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.RED);
-		g2d.drawImage(bullet, transform, this);
+		g2d.drawImage(bullet, transform, i);
 //		g.drawPolygon(hitbox);
 	}
 

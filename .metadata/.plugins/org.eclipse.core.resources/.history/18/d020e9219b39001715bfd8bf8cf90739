@@ -1,0 +1,28 @@
+import java.awt.Image;
+import java.awt.Rectangle;
+
+import javax.swing.ImageIcon;
+
+
+public class Bomb{
+
+	
+	private int damage = 100;
+	private int x, y;
+	private Image bomb;
+	
+	
+	public Bomb(Rectangle startPos){
+		x = (int) (startPos.getX() + startPos.getWidth()/2);
+		y = (int)(startPos.getY() + 10);
+		bomb = new ImageIcon("bomb.png").getImage();
+	}
+	
+	
+	public int getDmg(){
+		return damage;
+	}
+	
+	
+	
+}

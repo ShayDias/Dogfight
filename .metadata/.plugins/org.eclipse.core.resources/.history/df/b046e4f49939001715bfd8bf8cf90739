@@ -1,0 +1,12 @@
+import java.awt.Rectangle;
+
+import javax.swing.JPanel;
+
+public class Bomb extends JPanel{
+
+	
+	public Bomb(Rectangle startPos)
+	
+	
+	
+}

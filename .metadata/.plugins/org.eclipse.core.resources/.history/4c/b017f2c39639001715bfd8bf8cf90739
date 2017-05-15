@@ -1,0 +1,292 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ImageObserver;
+
+public class Airplane{
+
+	private Image plane;
+	private boolean isP1 = true;
+	private int speed = 5;
+	private int[] xs, ys;
+	private double[] src;
+	double[] dst = new double[8];
+	private int[] xTrans, yTrans;
+	private int angle;
+	private Polygon hitbox;
+	private int health;
+	private AffineTransform transform;
+	private AffineTransform t;
+	private boolean flying = true;
+	private int rotation = 8;
+	private int canShoot;
+	private Sounds sounds = new Sounds();
+
+	//private int bombs = 3;
+
+
+	public Airplane(Image plane, boolean isP1){
+		flying = true;
+		canShoot = 0;
+		this.plane = plane.getScaledInstance(80, 25, 100);
+		transform = new AffineTransform();
+		health = 100;
+		this.isP1 = isP1;
+		if(isP1 == true){
+			transform.translate(80, 300);
+			transform.scale(-1, 1);
+			xs = new int[]{0, 80, 80, 0};
+			ys = new int[] {0, 0, 25, 25};
+
+			angle = 0;
+		}
+		else{
+			transform.translate(920, 300);
+			xs = new int[]{0, 80, 80, 0};
+			ys = new int[]{0, 0, 25, 25};
+			angle = 180;
+		}
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
+	}
+
+	//Changes the speed without going over or under by too much
+	public void changeSpeed(int change){
+		if(speed + change <= 4 && speed + change > 1){
+			speed += change;
+		}
+	}
+
+	//Moves the plane based on speed
+	public void move(){
+		transform.translate(-(2 * speed), 0);
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);		
+		Dogfight.panel.repaint();
+	}
+
+	public Polygon getHitbox(){
+		return hitbox;
+	}
+
+	public boolean getFlying(){
+		return flying;
+	}
+
+	private void crash(){
+		flying = false;
+		if(isP1 == false){
+			this.rotate(30 - angle);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
+			}
+			this.rotate(60 - angle);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			this.rotate(90 - angle);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		else{
+			this.rotate(210 - angle);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
+			}
+			this.rotate(240 - angle);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			this.rotate(270 - angle);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+		speed = 15;
+	}
+
+	public void takeHit(int healthLost){
+		health -= healthLost;
+		if(health <= 0){
+			this.crash();
+		}
+	}
+	public void rotate(){
+		angle += rotation;
+		transform.rotate(Math.toRadians(rotation));
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
+		Dogfight.panel.repaint();
+	}
+
+	public void rotateDown(){
+		angle -= rotation;
+		transform.rotate(Math.toRadians(-rotation));
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
+		Dogfight.panel.repaint();
+	}
+
+	public void rotate(int rotation){
+		angle += rotation;
+		transform.rotate(Math.toRadians(rotation));
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
+		Dogfight.panel.repaint();
+	}
+
+
+	//Creates a new bullet
+	public void shoot(){
+		canShoot++;
+		if(canShoot > 6){
+			canShoot = 0;
+			if(isP1 == true){
+				sounds.playSound();
+			}
+		}
+		if(canShoot == 0){
+			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
+			Dogfight.addBullet(bullet);
+		}
+	}
+
+	public void setAngle(int angle){
+		this.angle = angle;
+		transform.rotate(Math.toRadians(this.angle - angle));
+
+	}
+
+	public void setSpeed(int speed){
+		this.speed = speed;
+	}
+
+	public Image getImage(){
+		return plane;
+	}
+
+
+	public void setImage(Image image){
+		plane = image;
+	}
+
+	public void returnToMap(Rectangle bounds){
+
+		if(hitbox.getBounds().getY() < 0){
+			if(isP1 == true){
+				transform.translate(100, 0);
+				transform.rotate(Math.toRadians(270 - angle));
+				angle = 270;
+			}
+			else{
+				transform.translate(-90, 0);
+				transform.rotate(Math.toRadians(90 - angle));
+				angle = 90;
+			}
+		}
+
+		else if(hitbox.getBounds().getX() > bounds.getWidth()){
+			System.out.println("left");
+			transform.rotate(Math.toRadians(180));
+			angle += 180;
+			transform.translate(40, 0);
+		}
+		else if(hitbox.getBounds().getX() < 0){
+			System.out.println("right");
+			transform.rotate(Math.toRadians(180));
+			angle += 180;
+			transform.translate(40, 0);
+		}
+
+
+		//Hitboxes
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
+	}
+
+	public int getHealth(){
+		return health;
+	}
+
+	public void draw(Graphics g, ImageObserver i){
+		Graphics2D g2d = (Graphics2D)g;
+
+
+		if(isP1 == true){
+			g2d.drawImage(plane, transform, i);
+		}
+		else{
+			g2d.drawImage(plane, transform, i);
+		}
+		//		g2d.draw(hitbox);
+	}
+
+}

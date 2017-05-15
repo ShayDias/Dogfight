@@ -1,5 +1,51 @@
-import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.image.ImageObserver;
 
-public class Bomb extends JPanel{
+import javax.swing.ImageIcon;
 
+
+public class Bomb{
+
+	
+	private int damage = 100;
+	private int x, y;
+	private Rectangle hitbox;
+	private Image bomb;
+	
+	
+	public Bomb(Rectangle startPos){
+		x = (int) (startPos.getX() + startPos.getWidth()/2);
+		y = (int)(startPos.getY() + startPos.getHeight() + 10);
+		bomb = new ImageIcon("bomb.png").getImage();
+		bomb = bomb.getScaledInstance(10, 30, 100);
+		hitbox = new Rectangle(x, y, bomb.getWidth(null), bomb.getHeight(null));
+	}
+	
+	
+	public void move(){
+		y -= 10;
+		hitbox.translate(0, -10);
+	}
+	
+	public void explode(){
+		bomb = new ImageIcon("explosion.gif").getImage();
+		bomb = bomb.getScaledInstance(50, 50, 100);
+	}
+	
+	public Rectangle getHitbox(){
+		return hitbox;
+	}
+	
+	public int getDmg(){
+		return damage;
+	}
+	
+	public void paint(Graphics g, ImageObserver i){
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.drawImage(bomb, x, y, i);
+	}
+	
 }

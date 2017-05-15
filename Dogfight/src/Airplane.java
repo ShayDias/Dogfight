@@ -1,12 +1,12 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
+
+import javax.swing.ImageIcon;
 
 public class Airplane{
 
@@ -22,7 +22,7 @@ public class Airplane{
 	private int health;
 	private AffineTransform transform;
 	private AffineTransform t;
-	private boolean flying = true;
+	private boolean flying = true, moving = true;
 	private int rotation = 8;
 	private int canShoot;
 	private Sounds sounds = new Sounds();
@@ -32,6 +32,7 @@ public class Airplane{
 
 	public Airplane(Image plane, boolean isP1){
 		flying = true;
+		moving = true;
 		canShoot = 0;
 		this.plane = plane.getScaledInstance(80, 25, 100);
 		transform = new AffineTransform();
@@ -65,10 +66,12 @@ public class Airplane{
 
 	//Changes the speed without going over or under by too much
 	public void changeSpeed(int change){
-		if(speed + change <= 4 && speed + change > 1){
+		if(speed + change <= 4 && speed + change > 2){
 			speed += change;
 		}
 	}
+	
+	
 
 	//Moves the plane based on speed
 	public void move(){
@@ -92,6 +95,10 @@ public class Airplane{
 
 	public boolean getFlying(){
 		return flying;
+	}
+	
+	public boolean getMoving(){
+		return moving;
 	}
 
 	private void crash(){
@@ -138,7 +145,17 @@ public class Airplane{
 		}
 
 
-		speed = 15;
+		speed = 8;
+	}
+
+	public void explode(){
+		plane = new ImageIcon("explosion.gif").getImage();
+		plane.getScaledInstance(150, 150, 100);
+//		transform.translate(30, 10);
+		transform.setToRotation(Math.toRadians(0));
+		transform.translate(hitbox.getBounds2D().getX(), hitbox.getBounds2D().getY());
+		flying = false;
+		moving = false;
 	}
 
 	public void takeHit(int healthLost){
@@ -199,7 +216,7 @@ public class Airplane{
 	//Creates a new bullet
 	public void shoot(){
 		canShoot++;
-		if(canShoot > 6){
+		if(canShoot > 5){
 			canShoot = 0;
 			if(isP1 == true){
 				sounds.playSound();
@@ -207,10 +224,10 @@ public class Airplane{
 		}
 		if(canShoot == 0){
 			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
-			Dogfight.addBullet(bullet);
+			Dogfight.panel.addBullet(bullet);
 		}
 	}
-
+	
 	public void setAngle(int angle){
 		this.angle = angle;
 		transform.rotate(Math.toRadians(this.angle - angle));
@@ -246,19 +263,16 @@ public class Airplane{
 		}
 
 		else if(hitbox.getBounds().getX() > bounds.getWidth()){
-			if(isP1 == true){
-				transform.setToRotation(Math.toRadians(0));
-			}
-			else{
-				transform.setToRotation(Math.toRadians(180));
-			}
-			transform.translate(-bounds.getWidth(), 0);
-			transform.rotate(Math.toRadians(angle));
+			System.out.println("left");
+			transform.rotate(Math.toRadians(180));
+			angle += 180;
+			transform.translate(-100, 0);
 		}
 		else if(hitbox.getBounds().getX() < 0){
-			transform.setToRotation(0);
-			transform.translate(bounds.getWidth() + 40, 0);
-			transform.rotate(Math.toRadians(angle));
+			System.out.println("right");
+			transform.rotate(Math.toRadians(180));
+			angle += 180;
+			transform.translate(-100, 0);
 		}
 
 
