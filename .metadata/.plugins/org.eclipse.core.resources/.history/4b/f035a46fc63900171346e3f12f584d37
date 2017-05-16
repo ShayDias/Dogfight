@@ -231,10 +231,6 @@ public class Airplane{
 	public void incCanBomb(){
 		canBomb ++;
 	}
-	
-	public void incCanShoot(){
-		canShoot ++;
-	}
 
 	//Creates a new bullet
 	public void shoot(){
@@ -285,11 +281,13 @@ public class Airplane{
 		}
 
 		else if(hitbox.getBounds().getX() > bounds.getWidth()){
+			System.out.println("left");
 			transform.rotate(Math.toRadians(180));
 			angle += 180;
 			transform.translate(-100, 0);
 		}
 		else if(hitbox.getBounds().getX() < 0){
+			System.out.println("right");
 			transform.rotate(Math.toRadians(180));
 			angle += 180;
 			transform.translate(-100, 0);

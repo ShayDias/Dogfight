@@ -285,11 +285,13 @@ public class Airplane{
 		}
 
 		else if(hitbox.getBounds().getX() > bounds.getWidth()){
+			System.out.println("left");
 			transform.rotate(Math.toRadians(180));
 			angle += 180;
 			transform.translate(-100, 0);
 		}
 		else if(hitbox.getBounds().getX() < 0){
+			System.out.println("right");
 			transform.rotate(Math.toRadians(180));
 			angle += 180;
 			transform.translate(-100, 0);

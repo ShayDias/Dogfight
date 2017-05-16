@@ -141,7 +141,7 @@ public class Dogfight extends JPanel implements KeyListener{
 					panel.bombs.get(i).setMoving(false);
 					panel.bombs.get(i).explode();
 				}
-				if(panel.bombs.get(i).getMoving() == false){
+				if(panel.bombs.get(i).getDraw() == false){
 					panel.bombs.get(i).setDraw(false);
 					panel.bombs.remove(panel.bombs.get(i));
 				}

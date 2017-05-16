@@ -17,18 +17,19 @@ public class Bomb{
 	private Rectangle hitbox;
 	private Image bomb;
 	private boolean moving = true;
-	private boolean drawing = true;
+	private boolean draw = true;
 
 
 	public Bomb(Rectangle startPos){
 		moving = true;
-		drawing = true;
+		draw = true;
 		x = (int) (startPos.getX() + startPos.getWidth()/2);
 		y = (int)(startPos.getY() + startPos.getHeight() + 10);
 		bomb = new ImageIcon("bomb.png").getImage();
 		bomb = bomb.getScaledInstance(10, 30, 100);
 		width = 10;
 		height = 30;
+		System.out.println(width);
 		hitbox = new Rectangle(x, y, width, height);
 	}
 
@@ -48,14 +49,6 @@ public class Bomb{
 		moving = change;
 	}
 
-	public boolean getDraw(){
-		return drawing;
-	}
-
-	public void setDraw(boolean change){
-		drawing = change;
-	}
-	
 	public void explode(){
 		bomb = new ImageIcon("explosion.gif").getImage();
 		bomb = bomb.getScaledInstance(50, 50, 100);
@@ -73,7 +66,7 @@ public class Bomb{
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.drawImage(bomb, x, y, i);
 		g2d.setColor(Color.RED);
-//		g2d.draw(hitbox);
+		g2d.draw(hitbox);
 	}
 
 }

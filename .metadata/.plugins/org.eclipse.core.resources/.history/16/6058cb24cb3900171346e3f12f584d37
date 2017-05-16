@@ -59,6 +59,7 @@ public class Bomb{
 	public void explode(){
 		bomb = new ImageIcon("explosion.gif").getImage();
 		bomb = bomb.getScaledInstance(50, 50, 100);
+		drawing = false;
 	}
 
 	public Rectangle getHitbox(){

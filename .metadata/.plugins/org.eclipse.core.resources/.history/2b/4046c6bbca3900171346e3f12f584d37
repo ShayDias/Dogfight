@@ -29,6 +29,7 @@ public class Bomb{
 		bomb = bomb.getScaledInstance(10, 30, 100);
 		width = 10;
 		height = 30;
+		System.out.println(width);
 		hitbox = new Rectangle(x, y, width, height);
 	}
 
@@ -73,7 +74,7 @@ public class Bomb{
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.drawImage(bomb, x, y, i);
 		g2d.setColor(Color.RED);
-//		g2d.draw(hitbox);
+		g2d.draw(hitbox);
 	}
 
 }

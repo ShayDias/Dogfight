@@ -221,23 +221,16 @@ public class Airplane{
 			if(numBombs > 0){
 				canBomb = 0;
 				numBombs --;
-				Bomb bomb = new Bomb(hitbox.getBounds());
-				Dogfight.panel.addBomb(bomb);
 			}
+			Bomb bomb = new Bomb(hitbox.getBounds());
+			Dogfight.panel.addBomb(bomb);
 		}
 	}
 
-	
-	public void incCanBomb(){
-		canBomb ++;
-	}
-	
-	public void incCanShoot(){
-		canShoot ++;
-	}
 
 	//Creates a new bullet
 	public void shoot(){
+		canShoot++;
 		if(canShoot > 5){
 			canShoot = 0;
 			if(isP1 == true){
@@ -285,11 +278,13 @@ public class Airplane{
 		}
 
 		else if(hitbox.getBounds().getX() > bounds.getWidth()){
+			System.out.println("left");
 			transform.rotate(Math.toRadians(180));
 			angle += 180;
 			transform.translate(-100, 0);
 		}
 		else if(hitbox.getBounds().getX() < 0){
+			System.out.println("right");
 			transform.rotate(Math.toRadians(180));
 			angle += 180;
 			transform.translate(-100, 0);
