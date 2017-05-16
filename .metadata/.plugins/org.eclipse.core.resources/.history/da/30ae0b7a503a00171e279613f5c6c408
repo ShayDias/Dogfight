@@ -381,7 +381,7 @@ public class Dogfight extends JPanel implements KeyListener{
 				}
 			}
 		}
-		else{
+//		else{
 //			if(panel.menu.getOnMenu() == true){
 //				g.setColor(Color.RED);
 //				g.setFont(new Font("Serif", Font.BOLD, 60));

@@ -30,7 +30,7 @@ public class Menu {
 	}
 	
 	public void start(){
-		Dogfight.setBackground(new ImageIcon("dogfight.jpg").getImage().getScaledInstance((int)Dogfight.bounds.getWidth(), (int)Dogfight.bounds.getHeight(), 100));
+		Dogfight.setBackground(new ImageIcon("dogfight.jpg").getImage().getScaledInstance((int)Dogfight.bounds.getWidth(), (int)Dogfight.bounds.getHeight(), 100);
 		
 	}
 	

@@ -58,11 +58,11 @@ public class Dogfight extends JPanel implements KeyListener{
 
 
 		menu = new Menu();
-//		menu.start();
-//		while(menu.getOnMenu() == true){
-//			
-//			
-//		}
+		menu.start();
+		while(menu.getOnMenu() == true){
+			
+			
+		}
 		
 		
 
@@ -382,20 +382,12 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 		}
 		else{
-//			if(panel.menu.getOnMenu() == true){
-//				g.setColor(Color.RED);
-//				g.setFont(new Font("Serif", Font.BOLD, 60));
-//				g.drawString("DOGFIGHT", 350, 50);
-//				g.setFont(new Font("Serif", Font.BOLD, 30));
-//				g.drawString("Select Your Plane", 400, 100);
-//				
-//				g.drawImage(new ImageIcon("bf109.png").getImage(), 150, 300, this);
-//				g.drawImage(new ImageIcon("spitfire.png").getImage(), 150, 600, this);
-//				g.drawImage(new ImageIcon("mig").getImage(), 500, 300, this);
-//				g.drawImage(new ImageIcon("zero.png").getImage(), 500, 600, this);
-//				g.drawImage(new ImageIcon("thunderbolt.png").getImage(), 150, 300, this);
-//
-//			}
+			if(panel.menu.getOnMenu() == true){
+				g.setColor(Color.RED);
+				g.setFont(new Font("Serif", Font.BOLD, 60));
+				g.drawString("DOGFIGHT", 375, 50);
+				g.drawString("Select Your Plane", 375, 100);
+			}
 			
 			if(Menu.counting == true){
 				g.setColor(Color.RED);

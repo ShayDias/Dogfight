@@ -56,23 +56,13 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setResizable(false);
 		frame.setVisible(true);
 
-
-		menu = new Menu();
-//		menu.start();
-//		while(menu.getOnMenu() == true){
-//			
-//			
-//		}
-		
-		
-
 		//To give time for stuff to load
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
+		menu = new Menu();
 		menu.countdown();
 
 		started = true;
@@ -190,6 +180,11 @@ public class Dogfight extends JPanel implements KeyListener{
 				e.printStackTrace();
 			}
 		}
+
+
+
+
+
 	}
 
 	@Override
@@ -321,60 +316,60 @@ public class Dogfight extends JPanel implements KeyListener{
 	public void paintComponent(Graphics g){
 		g.drawImage(background, 0, 0, this);
 
+		//plane1
+		if(plane1.getMoving() == false){
+			if(p1c < 5){
+				plane1.draw(g, this);
+				p1c = 0;
+			}
+			else{
+				p1c ++;
+			}
+		}
+		else{
+			plane1.draw(g, this);
+		}
+
+		//plane2
+		if(plane2.getMoving() == false){
+			if(p2c < 3){
+				plane2.draw(g, this);
+				p2c = 0;
+			}
+			else{
+				p2c ++;
+			}
+		}
+		else{
+			plane2.draw(g, this);
+		}
+
+
+		//Health
+		int p1H = plane1.getHealth();
+		int p2H = plane2.getHealth();
+		if(p1H < 0){
+			p1H = 0;
+		}
+		if(p2H < 0){
+			p2H = 0;
+		}
+		g.setColor(Color.BLACK);
+		g.drawRect(10, 5, 100, 10);
+		g.drawRect(WIDTH - 110, 5, 100, 10);
+		g.setColor(Color.BLUE);
+		g.fillRect(10, 5, p1H, 10);
+		g.setColor(Color.RED);
+		g.fillRect(WIDTH - 110, 5, p2H, 10);
+
 
 		if(started == true){ //If the game has been started
-			//plane1
-			if(plane1.getMoving() == false){
-				if(p1c < 5){
-					plane1.draw(g, this);
-					p1c = 0;
-				}
-				else{
-					p1c ++;
-				}
+			for(int i = 0; i < bullets.size(); i++){
+				bullets.get(i).paint(g, this);
 			}
-			else{
-				plane1.draw(g, this);
-			}
+		}
 
-			//plane2
-			if(plane2.getMoving() == false){
-				if(p2c < 3){
-					plane2.draw(g, this);
-					p2c = 0;
-				}
-				else{
-					p2c ++;
-				}
-			}
-			else{
-				plane2.draw(g, this);
-			}
-
-
-			//Health
-			int p1H = plane1.getHealth();
-			int p2H = plane2.getHealth();
-			if(p1H < 0){
-				p1H = 0;
-			}
-			if(p2H < 0){
-				p2H = 0;
-			}
-			g.setColor(Color.BLACK);
-			g.drawRect(10, 5, 100, 10);
-			g.drawRect(WIDTH - 110, 5, 100, 10);
-			g.setColor(Color.BLUE);
-			g.fillRect(10, 5, p1H, 10);
-			g.setColor(Color.RED);
-			g.fillRect(WIDTH - 110, 5, p2H, 10);
-
-
-			if(started == true){ //If the game has been started
-				for(int i = 0; i < bullets.size(); i++){
-					bullets.get(i).paint(g, this);
-				}
-			}
+		if(started == true){ //If the game has been started
 			for(int i = 0; i < bombs.size(); i++){
 				if(bombs.get(i).getDraw() == true){
 					bombs.get(i).paint(g, this);
@@ -382,21 +377,6 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 		}
 		else{
-//			if(panel.menu.getOnMenu() == true){
-//				g.setColor(Color.RED);
-//				g.setFont(new Font("Serif", Font.BOLD, 60));
-//				g.drawString("DOGFIGHT", 350, 50);
-//				g.setFont(new Font("Serif", Font.BOLD, 30));
-//				g.drawString("Select Your Plane", 400, 100);
-//				
-//				g.drawImage(new ImageIcon("bf109.png").getImage(), 150, 300, this);
-//				g.drawImage(new ImageIcon("spitfire.png").getImage(), 150, 600, this);
-//				g.drawImage(new ImageIcon("mig").getImage(), 500, 300, this);
-//				g.drawImage(new ImageIcon("zero.png").getImage(), 500, 600, this);
-//				g.drawImage(new ImageIcon("thunderbolt.png").getImage(), 150, 300, this);
-//
-//			}
-			
 			if(Menu.counting == true){
 				g.setColor(Color.RED);
 				g.setFont(new Font("Serif", Font.BOLD, 50));
