@@ -261,14 +261,6 @@ public class Airplane{
 		this.speed = speed;
 	}
 
-	public int getRespawnTimer(){
-		return respawnTimer;
-	}
-	
-	public void incRespawnTimer(){
-		respawnTimer ++;
-	}
-	
 	public Image getImage(){
 		return plane;
 	}
