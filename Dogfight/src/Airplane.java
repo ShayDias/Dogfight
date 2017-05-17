@@ -68,7 +68,7 @@ public class Airplane{
 
 	//Changes the speed without going over or under by too much
 	public void changeSpeed(int change){
-		if(speed + change <= 4 && speed + change > 2){
+		if(speed + change <= 7 && speed + change > 3){
 			speed += change;
 		}
 	}

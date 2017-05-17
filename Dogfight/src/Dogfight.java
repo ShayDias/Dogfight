@@ -20,6 +20,7 @@ public class Dogfight extends JPanel implements KeyListener{
 
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
+	private Image p1I, p2I;
 
 	private int p1c, p2c;
 
@@ -38,8 +39,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		//Instantiating airplanes, later will add a selection to this
 		p1c = 0;
 		p2c = 0;
-		plane1 = new Airplane(new ImageIcon("spitfire.png").getImage(), true);
-		plane2 = new Airplane(new ImageIcon("zero.png").getImage(), false);
 	}
 
 	public static void main(String[] args){
@@ -60,21 +59,16 @@ public class Dogfight extends JPanel implements KeyListener{
 		panel.menu = new Menu();
 		panel.menu.start();
 		while(panel.menu.getOnMenu() == true){
-			
-			
+			//menu actions happenin'
 		}
 		
+		panel.createP1();
+		panel.createP2();
+		panel.plane1 = new Airplane(panel.p1I, true);
+		panel.plane2 = new Airplane(panel.p2I, false);
 		
-
-		//To give time for stuff to load
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
+		
 		panel.menu.countdown();
-
 		started = true;
 		while(started == true){
 			frame.setFocusable(true);
@@ -165,9 +159,11 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 
 			if(panel.plane1.getHitbox().intersects(ground)){
+				panel.plane1.takeHit(100);
 				panel.plane1.explode();
 			}
 			if(panel.plane2.getHitbox().intersects(ground)){
+				panel.plane2.takeHit(100);
 				panel.plane2.explode();
 			}
 			if(panel.plane1.getMoving() == true){
@@ -195,57 +191,84 @@ public class Dogfight extends JPanel implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {		
 		int code = e.getKeyCode();
-		if(code == KeyEvent.VK_W){
-			if(s != true){
-				w = true;
+
+		if(menu.getOnMenu() == false){
+			if(code == KeyEvent.VK_W){
+				if(s != true){
+					w = true;
+				}
+			}
+			if(code == KeyEvent.VK_A){
+				if(d != true){
+					a = true;
+				}
+			}
+			if(code == KeyEvent.VK_S){
+				if(w != true){
+					s = true;
+				}
+			}
+			if(code == KeyEvent.VK_D){
+				if(a != true){
+					d = true;
+				}
+			}
+			if(code == KeyEvent.VK_SPACE){
+				space = true;
+			}
+			if(code == KeyEvent.VK_UP){
+				if(down != true){
+					up = true;
+				}
+			}
+			if(code == KeyEvent.VK_DOWN){
+				if(up != true){
+					down = true;
+				}
+			}
+			if(code == KeyEvent.VK_LEFT){
+				if(right != true){
+					left = true;
+				}
+			}
+			if(code == KeyEvent.VK_RIGHT){
+				if(left != true){
+					right = true;
+				}
+			}
+			if(code == KeyEvent.VK_SLASH){
+				slash = true;
+			}
+			if(code == KeyEvent.VK_C){
+				c = true;
+			}
+			if(code == KeyEvent.VK_PERIOD){
+				period = true;
 			}
 		}
-		if(code == KeyEvent.VK_A){
-			if(d != true){
-				a = true;
+		else{
+			if(code == KeyEvent.VK_A){
+				panel.menu.changeP1(-1);
+				repaint();
 			}
-		}
-		if(code == KeyEvent.VK_S){
-			if(w != true){
-				s = true;
+			if(code == KeyEvent.VK_D){
+				panel.menu.changeP1(1);
+				repaint();
 			}
-		}
-		if(code == KeyEvent.VK_D){
-			if(a != true){
-				d = true;
+			if(code == KeyEvent.VK_LEFT){
+				panel.menu.changeP2(-1);
+				repaint();
 			}
-		}
-		if(code == KeyEvent.VK_SPACE){
-			space = true;
-		}
-		if(code == KeyEvent.VK_UP){
-			if(down != true){
-				up = true;
+			if(code == KeyEvent.VK_RIGHT){
+				panel.menu.changeP2(1);
+				repaint();
 			}
-		}
-		if(code == KeyEvent.VK_DOWN){
-			if(up != true){
-				down = true;
+			if(code == KeyEvent.VK_SPACE){
+				System.out.println("a");
+				panel.menu.end();
+				panel.menu.setOnMenu(false);		
+				repaint();
 			}
-		}
-		if(code == KeyEvent.VK_LEFT){
-			if(right != true){
-				left = true;
-			}
-		}
-		if(code == KeyEvent.VK_RIGHT){
-			if(left != true){
-				right = true;
-			}
-		}
-		if(code == KeyEvent.VK_SLASH){
-			slash = true;
-		}
-		if(code == KeyEvent.VK_C){
-			c = true;
-		}
-		if(code == KeyEvent.VK_PERIOD){
-			period = true;
 		}
 	}
 
@@ -253,41 +276,43 @@ public class Dogfight extends JPanel implements KeyListener{
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 
-		if(code == KeyEvent.VK_W){
-			w = false;
-		}
-		if(code == KeyEvent.VK_A){
-			a = false;
-		}
-		if(code == KeyEvent.VK_S){
-			s = false;
-		}
-		if(code == KeyEvent.VK_D){
-			d = false;
-		}
-		if(code == KeyEvent.VK_SPACE){
-			space = false;
-		}
-		if(code == KeyEvent.VK_UP){
-			up = false;
-		}
-		if(code == KeyEvent.VK_DOWN){
-			down = false;
-		}
-		if(code == KeyEvent.VK_LEFT){
-			left = false;
-		}
-		if(code == KeyEvent.VK_RIGHT){
-			right = false;
-		}
-		if(code == KeyEvent.VK_SLASH){
-			slash = false;
-		}
-		if(code == KeyEvent.VK_C){
-			c = false;
-		}
-		if(code == KeyEvent.VK_PERIOD){
-			period = false;
+		if(menu.getOnMenu() == false){
+			if(code == KeyEvent.VK_W){
+				w = false;
+			}
+			if(code == KeyEvent.VK_A){
+				a = false;
+			}
+			if(code == KeyEvent.VK_S){
+				s = false;
+			}
+			if(code == KeyEvent.VK_D){
+				d = false;
+			}
+			if(code == KeyEvent.VK_SPACE){
+				space = false;
+			}
+			if(code == KeyEvent.VK_UP){
+				up = false;
+			}
+			if(code == KeyEvent.VK_DOWN){
+				down = false;
+			}
+			if(code == KeyEvent.VK_LEFT){
+				left = false;
+			}
+			if(code == KeyEvent.VK_RIGHT){
+				right = false;
+			}
+			if(code == KeyEvent.VK_SLASH){
+				slash = false;
+			}
+			if(code == KeyEvent.VK_C){
+				c = false;
+			}
+			if(code == KeyEvent.VK_PERIOD){
+				period = false;
+			}
 		}
 	}
 
@@ -296,7 +321,49 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
+	private void createP1(){
+		if(menu.getP1() == 1){
+			p1I = new ImageIcon("bf109.png").getImage();
+		}if(menu.getP1() == 2){
+			p1I = new ImageIcon("mig.png").getImage();
+		}
+		if(menu.getP1() == 3){
+			p1I = new ImageIcon("spitfire.png").getImage();
+		}
+		if(menu.getP1() == 4){
+			p1I = new ImageIcon("zero.png").getImage();
+		}
+		if(menu.getP1() == 5){
+			p1I = new ImageIcon("thunderbolt.png").getImage();
+		}
+	}
 	
+	private void createP2(){
+		if(menu.getP1() == 1){
+			p2I = new ImageIcon("bf109.png").getImage();
+		}if(menu.getP1() == 2){
+			p2I = new ImageIcon("mig.png").getImage();
+		}
+		if(menu.getP1() == 3){
+			p2I = new ImageIcon("spitfire.png").getImage();
+		}
+		if(menu.getP1() == 4){
+			p2I = new ImageIcon("zero.png").getImage();
+		}
+		if(menu.getP1() == 5){
+			p2I = new ImageIcon("thunderbolt.png").getImage();
+		}
+	}
+	
+	private void respawnP1(){
+		plane1 = new Airplane(p1I, true);
+	}
+	
+	private void respawnP2(){
+		plane2 = new Airplane(p2I, false);
+	}
+
+
 	public Menu getMenu(){
 		return menu;
 	}
@@ -386,7 +453,7 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 		}
 		else{
-			
+
 			if(menu.getOnMenu() == true){
 				menu.paintMenu(g, this);
 			}
