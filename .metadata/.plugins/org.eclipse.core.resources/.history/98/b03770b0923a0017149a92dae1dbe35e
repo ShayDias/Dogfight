@@ -60,19 +60,11 @@ public class Menu {
 			g.setFont(new Font("Serif", Font.BOLD, 30));
 			g.drawString("Select Your Plane", 400, 100);
 
-			g.setColor(Color.WHITE);
-			g.fillRect(100, 300, width, height);
-			g.fillRect(100, 550, width, height);
-			g.fillRect(600, 300, width, height);
-			g.fillRect(600, 550, width, height);
-			g.fillRect(350, 400, width, height);
-			
-			g.drawImage(bf109, 100, 300, i);
-			g.drawImage(spitfire, 100, 550, i);
-			g.drawImage(mig, 600, 300, i);
-			g.drawImage(zero, 600, 550, i);
-			g.drawImage(thunderbolt, 350, 400, i);
-			
+			g.drawImage(bf109, 50, 300, i);
+			g.drawImage(spitfire, 50, 550, i);
+			g.drawImage(mig, 400, 300, i);
+			g.drawImage(zero, 400, 5500, i);
+			g.drawImage(thunderbolt, 150, 300, i);
 		}
 
 

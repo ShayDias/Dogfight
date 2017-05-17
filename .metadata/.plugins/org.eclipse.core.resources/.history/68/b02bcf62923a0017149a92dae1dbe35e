@@ -18,18 +18,17 @@ public class Menu {
 	private Image mig = new ImageIcon("mig.png").getImage();
 	private Image thunderbolt = new ImageIcon("thunderbolt.png").getImage();
 	private Image zero = new ImageIcon("zero.png").getImage();
-	private int width = 200, height = 50;
 
 	private JPanel start = new JPanel();
 
 
 	public Menu(){
 		onMenu = true;
-		spitfire = spitfire.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-		bf109 = bf109.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-		mig = mig.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-		thunderbolt = thunderbolt.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-		zero = zero.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+		spitfire = spitfire.getScaledInstance(100, 25, Image.SCALE_DEFAULT);
+		bf109 = bf109.getScaledInstance(100, 25, Image.SCALE_DEFAULT);
+		mig = mig.getScaledInstance(100, 25, Image.SCALE_DEFAULT);
+		thunderbolt = thunderbolt.getScaledInstance(100, 25, Image.SCALE_DEFAULT);
+		zero = zero.getScaledInstance(100, 25, Image.SCALE_DEFAULT);
 	}
 
 
@@ -60,19 +59,11 @@ public class Menu {
 			g.setFont(new Font("Serif", Font.BOLD, 30));
 			g.drawString("Select Your Plane", 400, 100);
 
-			g.setColor(Color.WHITE);
-			g.fillRect(100, 300, width, height);
-			g.fillRect(100, 550, width, height);
-			g.fillRect(600, 300, width, height);
-			g.fillRect(600, 550, width, height);
-			g.fillRect(350, 400, width, height);
-			
-			g.drawImage(bf109, 100, 300, i);
-			g.drawImage(spitfire, 100, 550, i);
-			g.drawImage(mig, 600, 300, i);
-			g.drawImage(zero, 600, 550, i);
-			g.drawImage(thunderbolt, 350, 400, i);
-			
+			g.drawImage(bf109, 150, 300, i);
+			g.drawImage(spitfire, 150, 600, i);
+			g.drawImage(mig, 500, 300, i);
+			g.drawImage(zero, 500, 600, i);
+			g.drawImage(thunderbolt, 150, 300, i);
 		}
 
 

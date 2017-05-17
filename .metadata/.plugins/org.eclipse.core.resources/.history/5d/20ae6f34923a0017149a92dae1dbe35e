@@ -30,7 +30,7 @@ public class Dogfight extends JPanel implements KeyListener{
 	private boolean w = false, a = false, s = false, d = false, space = false, c = false;
 	private boolean up = false, down = false, left = false, right = false, slash = false, period = false;
 
-	private Menu menu = new Menu();
+	public static Menu menu = new Menu();
 	public static boolean started = false;
 
 
@@ -57,9 +57,9 @@ public class Dogfight extends JPanel implements KeyListener{
 		frame.setVisible(true);
 
 
-		panel.menu = new Menu();
-		panel.menu.start();
-		while(panel.menu.getOnMenu() == true){
+		menu = new Menu();
+		menu.start();
+		while(menu.getOnMenu() == true){
 			
 			
 		}
@@ -73,7 +73,7 @@ public class Dogfight extends JPanel implements KeyListener{
 			e.printStackTrace();
 		}
 
-		panel.menu.countdown();
+		menu.countdown();
 
 		started = true;
 		while(started == true){
@@ -296,10 +296,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
-	
-	public Menu getMenu(){
-		return menu;
-	}
 
 	public void addBomb(Bomb bomb){
 		panel.bombs.add(bomb);

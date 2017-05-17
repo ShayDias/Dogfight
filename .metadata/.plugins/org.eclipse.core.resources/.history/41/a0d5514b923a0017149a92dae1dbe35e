@@ -296,10 +296,6 @@ public class Dogfight extends JPanel implements KeyListener{
 		//nada
 	}
 
-	
-	public Menu getMenu(){
-		return menu;
-	}
 
 	public void addBomb(Bomb bomb){
 		panel.bombs.add(bomb);
