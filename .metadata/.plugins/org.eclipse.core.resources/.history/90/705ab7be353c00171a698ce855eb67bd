@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -33,7 +34,6 @@ public class Bomb{
 	}
 
 
-	//Moves the bomb down 15
 	public void move(){
 		if(moving == true){
 			y += 15;
@@ -71,10 +71,10 @@ public class Bomb{
 		return damage;
 	}
 
-	//Paints the bomb
 	public void paint(Graphics2D g2d, ImageObserver i){
 		g2d.drawImage(bomb, x, y, i);
 		g2d.setColor(Color.RED);
+//		g2d.draw(hitbox);
 	}
 
 }

@@ -64,7 +64,7 @@ public class Dogfight extends JPanel implements KeyListener{
 			panel.menu.start();
 
 			while(started != true){
-				System.out.println("in");
+//				System.out.println("in");
 			}
 
 			panel.createP1();

@@ -90,7 +90,6 @@ public class Airplane{
 		return moving;
 	}
 
-	//Crashes the plane into the ground
 	private void crash(){
 		if(flying == true){
 			flying = false;

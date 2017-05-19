@@ -23,6 +23,8 @@ public class Dogfight extends JPanel implements KeyListener{
 	public static final int HEIGHT = 700;
 	private Image p1I, p2I;
 
+	private int p1c, p2c;
+
 	public static final Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
 	public static final Rectangle ground = new Rectangle(-1000, HEIGHT - 75, WIDTH + 1000, 800); 
 	private static Image background = new ImageIcon("background.png").getImage();
@@ -39,6 +41,8 @@ public class Dogfight extends JPanel implements KeyListener{
 
 
 	public Dogfight(){
+		p1c = 0;
+		p2c = 0;
 		p1Lives = 5;
 		p2Lives = 5;
 	}
@@ -134,7 +138,7 @@ public class Dogfight extends JPanel implements KeyListener{
 						panel.removeBullet(panel.bullets.get(i));
 					}
 				}
-
+				
 				//Move bombs and check for bomb collisions 
 				for(int i = 0; i < panel.bombs.size(); i ++){
 					panel.bombs.get(i).move();
@@ -155,7 +159,7 @@ public class Dogfight extends JPanel implements KeyListener{
 						panel.bombs.remove(panel.bombs.get(i));
 					}
 				}
-
+				
 				//Check if planes left the map
 				if(!panel.plane1.getHitbox().intersects(bounds)){
 					panel.plane1.returnToMap(bounds);
@@ -173,7 +177,7 @@ public class Dogfight extends JPanel implements KeyListener{
 					panel.plane2.takeHit(100);
 					panel.plane2.explode();
 				}
-
+				
 				//Check if planes moved and increases the respawn timer
 				if(panel.plane1.getMoving() == true){
 					panel.plane1.move();
@@ -211,7 +215,7 @@ public class Dogfight extends JPanel implements KeyListener{
 					e.printStackTrace();
 				}
 			}
-
+			
 			//Ending screen
 			while(ended == true){
 				panel.endCount ++;
@@ -446,7 +450,7 @@ public class Dogfight extends JPanel implements KeyListener{
 		panel.bullets.remove(bullet);
 		bullet = new Bullet();
 	}
-
+	
 	//Setting the background to change between menu and in-game
 	public static void setBackground(Image image){
 		background = image;
@@ -454,7 +458,6 @@ public class Dogfight extends JPanel implements KeyListener{
 
 	//Paint method
 	public void paintComponent(Graphics g2){
-		//Scaling
 		Graphics2D g = (Graphics2D)g2;
 		double ratioX = (double)getWidth()/1000;
 		double ratioY = (double)getHeight()/700;
@@ -465,13 +468,35 @@ public class Dogfight extends JPanel implements KeyListener{
 
 		if(started == true){ //If the game has been started
 			//plane1
-			plane1.draw(g, this);
+			if(plane1.getMoving() == false){
+				if(p1c < 5){
+					plane1.draw(g, this);
+					p1c = 0;
+				}
+				else{
+					p1c ++;
+				}
+			}
+			else{
+				plane1.draw(g, this);
+			}
 
 			//plane2
-			plane2.draw(g, this);
+			if(plane2.getMoving() == false){
+				if(p2c < 3){
+					plane2.draw(g, this);
+					p2c = 0;
+				}
+				else{
+					p2c ++;
+				}
+			}
+			else{
+				plane2.draw(g, this);
+			}
 
 
-			//Health Bars and Lives
+			//Health
 			int p1H = plane1.getHealth();
 			int p2H = plane2.getHealth();
 			if(p1H < 0){
@@ -492,18 +517,15 @@ public class Dogfight extends JPanel implements KeyListener{
 
 
 			if(started == true){ //If the game has been started
-				//Draws bullets
 				for(int i = 0; i < bullets.size(); i++){
 					bullets.get(i).paint(g, this);
 				}
 			}
-			//Draws bombs
 			for(int i = 0; i < bombs.size(); i++){
 				if(bombs.get(i).getDraw() == true){
 					bombs.get(i).paint(g, this);
 				}
 			}
-			//Draws countdown
 			if(Menu.counting == true){
 				g.setColor(Color.RED);
 				g.setFont(new Font("Serif", Font.BOLD, 50));
@@ -511,12 +533,12 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 		}
 		else{
-			//Paints menu
+
 			if(menu.getOnMenu() == true){
 				menu.paintMenu(g, this);
 			}
 		}
-		//Paints winner on end screen
+		
 		if(ended == true){
 			g.setFont(new Font("Serif", Font.BOLD, 50));
 			g.setColor(Color.RED);

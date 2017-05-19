@@ -152,7 +152,6 @@ public class Menu {
 		return p1;
 	}
 
-	//Changes P2 selection
 	public void changeP2(int change){
 		p2 += change;
 		if(p2 > 5){

@@ -90,7 +90,6 @@ public class Airplane{
 		return moving;
 	}
 
-	//Crashes the plane into the ground
 	private void crash(){
 		if(flying == true){
 			flying = false;
@@ -138,7 +137,6 @@ public class Airplane{
 		}
 	}
 
-	//Blows up the plane
 	public void explode(){
 		if(exploded == false){
 			sounds.playExplosion();
@@ -152,7 +150,6 @@ public class Airplane{
 		moving = false;
 	}
 
-	//Changes health, crashes plane if health < 0
 	public void takeHit(int healthLost){
 		health -= healthLost;
 		if(health <= 0){
@@ -167,8 +164,7 @@ public class Airplane{
 	public void setTimeOut(int change){
 		timeOut = change;
 	}
-	
-	//Rotates the plane up by 5
+
 	public void rotate(){
 		angle += rotation;
 		transform.rotate(Math.toRadians(rotation));
@@ -176,7 +172,7 @@ public class Airplane{
 		Dogfight.panel.repaint();
 	}
 
-	//Rotates the plane down by 5
+	//Rotates the plane down
 	public void rotateDown(){
 		angle -= rotation;
 		transform.rotate(Math.toRadians(-rotation));
@@ -184,7 +180,7 @@ public class Airplane{
 		Dogfight.panel.repaint();
 	}
 
-	//Rotates the plane by a specifed amount
+	//Rotates the plane up
 	public void rotate(int rotation){
 		angle += rotation;
 		transform.rotate(Math.toRadians(rotation));

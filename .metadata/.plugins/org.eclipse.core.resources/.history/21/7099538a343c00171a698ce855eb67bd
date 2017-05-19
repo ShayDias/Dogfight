@@ -74,8 +74,7 @@ public class Menu {
 			g.drawString("P1 = Green, P2 = Red", 405, 150);
 			g.drawString("Use Arrows to Select", 405, 180);
 			g.drawString("Press Space to Start", 405, 210);
-			
-			//Draws planes
+
 			g.setColor(new Color(0, 0, 0, 95));
 			g.fillRect(100, 300, width, height);
 			g.fillRect(100, 550, width, height);
@@ -128,7 +127,6 @@ public class Menu {
 
 	}
 
-	//Changes P1 selection
 	public void changeP1(int change){
 		p1 += change;
 		if(p1 > 5){
@@ -152,7 +150,6 @@ public class Menu {
 		return p1;
 	}
 
-	//Changes P2 selection
 	public void changeP2(int change){
 		p2 += change;
 		if(p2 > 5){

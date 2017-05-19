@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -59,7 +60,16 @@ public class Airplane{
 			ys = new int[]{0, 0, 25, 25};
 			angle = 180;
 		}
-		moveHitbox();
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
 	}
 
 	//Changes the speed without going over or under by too much
@@ -74,7 +84,16 @@ public class Airplane{
 	//Moves the plane based on speed
 	public void move(){
 		transform.translate(-(2 * speed), 0);
-		moveHitbox();		
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);		
 		Dogfight.panel.repaint();
 	}
 
@@ -90,7 +109,6 @@ public class Airplane{
 		return moving;
 	}
 
-	//Crashes the plane into the ground
 	private void crash(){
 		if(flying == true){
 			flying = false;
@@ -138,7 +156,6 @@ public class Airplane{
 		}
 	}
 
-	//Blows up the plane
 	public void explode(){
 		if(exploded == false){
 			sounds.playExplosion();
@@ -146,13 +163,13 @@ public class Airplane{
 		exploded = true;
 		plane = new ImageIcon("explosion.gif").getImage();
 		plane.getScaledInstance(150, 150, 100);
+		//		transform.translate(30, 10);
 		transform.setToRotation(Math.toRadians(0));
 		transform.translate(hitbox.getBounds2D().getX(), hitbox.getBounds2D().getY());
 		flying = false;
 		moving = false;
 	}
 
-	//Changes health, crashes plane if health < 0
 	public void takeHit(int healthLost){
 		health -= healthLost;
 		if(health <= 0){
@@ -167,28 +184,52 @@ public class Airplane{
 	public void setTimeOut(int change){
 		timeOut = change;
 	}
-	
-	//Rotates the plane up by 5
+
 	public void rotate(){
 		angle += rotation;
 		transform.rotate(Math.toRadians(rotation));
-		moveHitbox();
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
 		Dogfight.panel.repaint();
 	}
 
-	//Rotates the plane down by 5
 	public void rotateDown(){
 		angle -= rotation;
 		transform.rotate(Math.toRadians(-rotation));
-		moveHitbox();
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
 		Dogfight.panel.repaint();
 	}
 
-	//Rotates the plane by a specifed amount
 	public void rotate(int rotation){
 		angle += rotation;
 		transform.rotate(Math.toRadians(rotation));
-		moveHitbox();
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
 		Dogfight.panel.repaint();
 	}
 
@@ -219,7 +260,13 @@ public class Airplane{
 	public void shoot(){
 		if(canShoot > 5){
 			canShoot = 0;
+			if(isP1 == true){
 			sounds.playSound();
+			}
+			else{
+				sounds.playSound2();
+			}
+
 		}
 		if(canShoot == 0){
 			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
@@ -254,7 +301,6 @@ public class Airplane{
 		plane = image;
 	}
 
-	//Returns the plane to the map if it is out
 	public void returnToMap(Rectangle bounds){
 
 		if(hitbox.getBounds().getY() < 0){
@@ -283,9 +329,17 @@ public class Airplane{
 
 
 		//Hitboxes
-		moveHitbox();
+		src = new double[]{
+				xs[0], ys[0],
+				xs[1], ys[1],
+				xs[2], ys[2],
+				xs[3], ys[3]};
+		t = new AffineTransform(transform);
+		t.transform(src, 0, dst, 0, 4);
+		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+		hitbox = new Polygon(xTrans, yTrans, 4);
 
-		//Backup in case it does not return immediately
 		if(!this.hitbox.intersects(bounds)){
 			timeOut += 1;
 			if(timeOut >= 20){
@@ -299,29 +353,24 @@ public class Airplane{
 					angle = 180;
 				}
 				timeOut = 0;
-				moveHitbox();			}
+				src = new double[]{
+						xs[0], ys[0],
+						xs[1], ys[1],
+						xs[2], ys[2],
+						xs[3], ys[3]};
+				t = new AffineTransform(transform);
+				t.transform(src, 0, dst, 0, 4);
+				xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+				yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+				hitbox = new Polygon(xTrans, yTrans, 4);
+			}
 		}
 	}
 
-	//Creates a new hitbox to match the plane
-	private void moveHitbox(){
-		src = new double[]{
-				xs[0], ys[0],
-				xs[1], ys[1],
-				xs[2], ys[2],
-				xs[3], ys[3]};
-		t = new AffineTransform(transform);
-		t.transform(src, 0, dst, 0, 4);
-		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
-		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
-		hitbox = new Polygon(xTrans, yTrans, 4);
-	}
-	
 	public int getHealth(){
 		return health;
 	}
 
-	//Draws the plane
 	public void draw(Graphics2D g2d, ImageObserver i){
 		if(isP1 == true){
 			g2d.drawImage(plane, transform, i);
@@ -329,5 +378,7 @@ public class Airplane{
 		else{
 			g2d.drawImage(plane, transform, i);
 		}
+		//				g2d.draw(hitbox);
 	}
+
 }
