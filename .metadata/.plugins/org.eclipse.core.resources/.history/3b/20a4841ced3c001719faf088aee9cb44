@@ -167,7 +167,7 @@ public class Airplane{
 	public void setTimeOut(int change){
 		timeOut = change;
 	}
-
+	
 	//Rotates the plane up by 5
 	public void rotate(){
 		angle += rotation;
@@ -257,51 +257,49 @@ public class Airplane{
 	//Returns the plane to the map if it is out
 	public void returnToMap(Rectangle bounds){
 
-		if(flying == true){
-			if(hitbox.getBounds().getY() < 0){
+		if(hitbox.getBounds().getY() < 0){
+			if(isP1 == true){
+				transform.translate(100, 0);
+				transform.rotate(Math.toRadians(270 - angle));
+				angle = 270;
+			}
+			else{
+				transform.translate(-90, 0);
+				transform.rotate(Math.toRadians(90 - angle));
+				angle = 90;
+			}
+		}
+
+		else if(hitbox.getBounds().getX() > bounds.getWidth()){
+			transform.rotate(Math.toRadians(180));
+			angle += 180;
+			transform.translate(-100, 0);
+		}
+		else if(hitbox.getBounds().getX() < 0){
+			transform.rotate(Math.toRadians(180));
+			angle += 180;
+			transform.translate(-100, 0);
+		}
+
+
+		//Hitboxes
+		moveHitbox();
+
+		//Backup in case it does not return immediately
+		if(!this.hitbox.intersects(bounds)){
+			timeOut += 1;
+			if(timeOut >= 20){
 				if(isP1 == true){
-					transform.translate(100, 0);
-					transform.rotate(Math.toRadians(270 - angle));
-					angle = 270;
+					transform.setToTranslation(80, 300);
+					transform.scale(-1, 1);
+					angle = 0;
 				}
 				else{
-					transform.translate(-90, 0);
-					transform.rotate(Math.toRadians(90 - angle));
-					angle = 90;
+					transform.setToTranslation(920, 300);
+					angle = 180;
 				}
-			}
-
-			else if(hitbox.getBounds().getX() > bounds.getWidth()){
-				transform.rotate(Math.toRadians(180));
-				angle += 180;
-				transform.translate(-100, 0);
-			}
-			else if(hitbox.getBounds().getX() < 0){
-				transform.rotate(Math.toRadians(180));
-				angle += 180;
-				transform.translate(-100, 0);
-			}
-
-
-			//Hitboxes
-			moveHitbox();
-
-			//Backup in case it does not return immediately
-			if(!this.hitbox.intersects(bounds)){
-				timeOut += 1;
-				if(timeOut >= 20){
-					if(isP1 == true){
-						transform.setToTranslation(80, 300);
-						transform.scale(-1, 1);
-						angle = 0;
-					}
-					else{
-						transform.setToTranslation(920, 300);
-						angle = 180;
-					}
-					timeOut = 0;
-					moveHitbox();			}
-			}
+				timeOut = 0;
+				moveHitbox();			}
 		}
 	}
 
@@ -318,7 +316,7 @@ public class Airplane{
 		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
 		hitbox = new Polygon(xTrans, yTrans, 4);
 	}
-
+	
 	public int getHealth(){
 		return health;
 	}

@@ -67,7 +67,7 @@ public class Menu {
 			g.fillRect(325, 0, 355, 250);
 			g.setColor(Color.GREEN);
 			g.setFont(new Font("Serif", Font.BOLD, 60));
-			g.drawString("DOGFIGHT", 340, 50);
+			g.drawString("DOGFIGHT", 350, 50);
 			g.setFont(new Font("Serif", Font.BOLD, 30));
 			g.drawString("Select Your Plane", 400, 100);
 			g.setFont(new Font("Serif", Font.BOLD, 25));
