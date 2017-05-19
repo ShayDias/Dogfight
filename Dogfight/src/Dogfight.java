@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -23,7 +24,7 @@ public class Dogfight extends JPanel implements KeyListener{
 	private Image p1I, p2I;
 
 	private int p1c, p2c;
-	
+
 	public static final Rectangle bounds = new Rectangle(0, 0, WIDTH, HEIGHT);
 	public static final Rectangle ground = new Rectangle(-1000, HEIGHT - 75, WIDTH + 1000, 800); 
 	private static Image background = new ImageIcon("background.png").getImage();
@@ -31,16 +32,19 @@ public class Dogfight extends JPanel implements KeyListener{
 	private boolean w = false, a = false, s = false, d = false, space = false, c = false;
 	private boolean up = false, down = false, left = false, right = false, slash = false, period = false;
 
-	private int respawnTime = 50;
-	
+	private int p1Lives, p2Lives;
+
+
 	private Menu menu = new Menu();
-	public static boolean started = false;
+	public static boolean started = false, ended;
+	private int endCount = 0;
 
 
 	public Dogfight(){
-		//Instantiating airplanes, later will add a selection to this
 		p1c = 0;
 		p2c = 0;
+		p1Lives = 5;
+		p2Lives = 5;
 	}
 
 	public static void main(String[] args){
@@ -54,157 +58,172 @@ public class Dogfight extends JPanel implements KeyListener{
 		panel.setBackground(Color.WHITE);
 		frame.addKeyListener(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setVisible(true);
 
+		while(true){
+			panel.p1Lives = 5;
+			panel.p2Lives = 5;
+			panel.menu = new Menu();
+			panel.menu.start();
 
-		panel.menu = new Menu();
-		panel.menu.start();
-		while(panel.menu.getOnMenu() == true){
-			System.out.println("in");
+			while(started != true){
+				System.out.println("in");
+			}
+
+			panel.createP1();
+			panel.createP2();
+			panel.plane1 = new Airplane(panel.p1I, true);
+			panel.plane2 = new Airplane(panel.p2I, false);
+
+			panel.menu.countdown();
+
+			while(started == true){
+				frame.setFocusable(true);
+				frame.requestFocus();
+				//Airplane movement
+				if(panel.plane1.getFlying() == true){
+					if(panel.w == true){
+						panel.plane1.rotate();
+					}
+					if(panel.a == true){
+						panel.plane1.changeSpeed(-1);
+					}
+					if(panel.s == true){
+						panel.plane1.rotateDown();
+					}
+					if(panel.d == true){
+						panel.plane1.changeSpeed(1);
+					}
+					if(panel.space == true){
+						panel.plane1.shoot();
+					}
+					if(panel.c == true){
+						panel.plane1.bomb();
+					}
+				}
+				if(panel.plane2.getFlying() == true){
+					if(panel.up == true){
+						panel.plane2.rotate();
+					}
+					if(panel.down == true){
+						panel.plane2.rotateDown();
+					}
+					if(panel.left == true){
+						panel.plane2.changeSpeed(-1);
+					}
+					if(panel.right == true){
+						panel.plane2.changeSpeed(1);
+					}
+					if(panel.slash == true){
+						panel.plane2.shoot();
+					}
+					if(panel.period == true){
+						panel.plane2.bomb();
+					}
+				}
+
+				//Move bullets, happens before planes move so they don't run into their own bullets
+				for(int i = 0; i < panel.bullets.size(); i++){
+					panel.bullets.get(i).move();
+					if(panel.bullets.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
+						panel.plane1.takeHit(panel.bullets.get(i).getDmg());
+						panel.bullets.get(i).setImage(null);
+					}
+					if(panel.bullets.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
+						panel.plane2.takeHit(panel.bullets.get(i).getDmg());
+						panel.bullets.get(i).setImage(null);
+					}
+					if(!panel.bullets.get(i).getHitbox().intersects(bounds)){
+						panel.removeBullet(panel.bullets.get(i));
+					}
+				}
+
+				for(int i = 0; i < panel.bombs.size(); i ++){
+					panel.bombs.get(i).move();
+					if(panel.bombs.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
+						panel.plane1.takeHit(panel.bombs.get(i).getDmg());
+						panel.bombs.get(i).explode();
+					}
+					if(panel.bombs.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
+						panel.plane2.takeHit(panel.bombs.get(i).getDmg());
+						panel.bombs.get(i).explode();
+					}
+					if(panel.bombs.get(i).getHitbox().intersects(ground)){
+						panel.bombs.get(i).setMoving(false);
+						panel.bombs.get(i).explode();
+					}
+					if(panel.bombs.get(i).getMoving() == false){
+						panel.bombs.get(i).setDraw(false);
+						panel.bombs.remove(panel.bombs.get(i));
+					}
+				}
+
+				if(!panel.plane1.getHitbox().intersects(bounds)){
+					panel.plane1.returnToMap(bounds);
+				}
+				if(!panel.plane2.getHitbox().intersects(bounds)){
+					panel.plane2.returnToMap(bounds);
+				}
+
+				if(panel.plane1.getHitbox().intersects(ground)){
+					panel.plane1.takeHit(100);
+					panel.plane1.explode();
+				}
+				if(panel.plane2.getHitbox().intersects(ground)){
+					panel.plane2.takeHit(100);
+					panel.plane2.explode();
+				}
+				if(panel.plane1.getMoving() == true){
+					panel.plane1.move();
+				}
+				else{
+					panel.plane1.incRespawnTimer();
+				}
+
+				if(panel.plane2.getMoving() == true){
+					panel.plane2.move();
+				}
+				else{
+					panel.plane2.incRespawnTimer();
+				}
+
+				if(panel.plane1.getRespawnTimer() > 30){
+					panel.respawnP1();
+				}
+
+				if(panel.plane2.getRespawnTimer() > 30){
+					panel.respawnP2();
+				}
+
+
+				//Shooting Timers
+				panel.plane1.incCanShoot();
+				panel.plane1.incCanBomb();
+				panel.plane2.incCanShoot();
+				panel.plane2.incCanBomb();
+
+				//Delay between loops
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
+			while(ended == true){
+				panel.endCount ++;
+				if(panel.endCount > 100){
+					ended = false;
+				}
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		
-		panel.createP1();
-		panel.createP2();
-		panel.plane1 = new Airplane(panel.p1I, true);
-		panel.plane2 = new Airplane(panel.p2I, false);
-		
-		
-		panel.menu.countdown();
-		started = true;
-		while(started == true){
-			System.out.println("started");
-			frame.setFocusable(true);
-			frame.requestFocus();
-			//Airplane movement
-			if(panel.plane1.getFlying() == true){
-				if(panel.w == true){
-					panel.plane1.rotate();
-				}
-				if(panel.a == true){
-					panel.plane1.changeSpeed(-1);
-				}
-				if(panel.s == true){
-					panel.plane1.rotateDown();
-				}
-				if(panel.d == true){
-					panel.plane1.changeSpeed(1);
-				}
-				if(panel.space == true){
-					panel.plane1.shoot();
-				}
-				if(panel.c == true){
-					panel.plane1.bomb();
-				}
-			}
-			if(panel.plane2.getFlying() == true){
-				if(panel.up == true){
-					panel.plane2.rotate();
-				}
-				if(panel.down == true){
-					panel.plane2.rotateDown();
-				}
-				if(panel.left == true){
-					panel.plane2.changeSpeed(-1);
-				}
-				if(panel.right == true){
-					panel.plane2.changeSpeed(1);
-				}
-				if(panel.slash == true){
-					panel.plane2.shoot();
-				}
-				if(panel.period == true){
-					panel.plane2.bomb();
-				}
-			}
 
-			//Move bullets, happens before planes move so they don't run into their own bullets
-			for(int i = 0; i < panel.bullets.size(); i++){
-				panel.bullets.get(i).move();
-				if(panel.bullets.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
-					panel.plane1.takeHit(panel.bullets.get(i).getDmg());
-					panel.bullets.get(i).setImage(null);
-				}
-				if(panel.bullets.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
-					panel.plane2.takeHit(panel.bullets.get(i).getDmg());
-					panel.bullets.get(i).setImage(null);
-				}
-				if(!panel.bullets.get(i).getHitbox().intersects(bounds)){
-					panel.removeBullet(panel.bullets.get(i));
-				}
-			}
-
-			for(int i = 0; i < panel.bombs.size(); i ++){
-				panel.bombs.get(i).move();
-				if(panel.bombs.get(i).getHitbox().intersects(panel.plane1.getHitbox().getBounds2D())){
-					panel.plane1.takeHit(panel.bombs.get(i).getDmg());
-					panel.bombs.get(i).explode();
-				}
-				if(panel.bombs.get(i).getHitbox().intersects(panel.plane2.getHitbox().getBounds2D())){
-					panel.plane2.takeHit(panel.bombs.get(i).getDmg());
-					panel.bombs.get(i).explode();
-				}
-				if(panel.bombs.get(i).getHitbox().intersects(ground)){
-					panel.bombs.get(i).setMoving(false);
-					panel.bombs.get(i).explode();
-				}
-				if(panel.bombs.get(i).getMoving() == false){
-					panel.bombs.get(i).setDraw(false);
-					panel.bombs.remove(panel.bombs.get(i));
-				}
-			}
-
-			if(!panel.plane1.getHitbox().intersects(bounds)){
-				panel.plane1.returnToMap(bounds);
-			}
-			if(!panel.plane2.getHitbox().intersects(bounds)){
-				panel.plane2.returnToMap(bounds);
-			}
-
-			if(panel.plane1.getHitbox().intersects(ground)){
-				panel.plane1.takeHit(100);
-				panel.plane1.explode();
-			}
-			if(panel.plane2.getHitbox().intersects(ground)){
-				panel.plane2.takeHit(100);
-				panel.plane2.explode();
-			}
-			if(panel.plane1.getMoving() == true){
-				panel.plane1.move();
-			}
-			else{
-				panel.plane1.incRespawnTimer();
-			}
-			
-			if(panel.plane2.getMoving() == true){
-				panel.plane2.move();
-			}
-			else{
-				panel.plane2.incRespawnTimer();
-			}
-			
-			if(panel.plane1.getRespawnTimer() > 30){
-				panel.respawnP1();
-			}
-			
-			if(panel.plane2.getRespawnTimer() > 30){
-				panel.respawnP2();
-			}
-			
-			
-			//Shooting Timers
-			panel.plane1.incCanShoot();
-			panel.plane1.incCanBomb();
-			panel.plane2.incCanShoot();
-			panel.plane2.incCanBomb();
-
-			//Delay between loops
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override
@@ -284,7 +303,8 @@ public class Dogfight extends JPanel implements KeyListener{
 			}
 			if(code == KeyEvent.VK_SPACE){
 				panel.menu.end();
-				panel.menu.setOnMenu(false);		
+				panel.menu.setOnMenu(false);
+				started = true;
 				repaint();
 			}
 		}
@@ -355,35 +375,53 @@ public class Dogfight extends JPanel implements KeyListener{
 			p1I = new ImageIcon("thunderbolt.png").getImage();
 		}
 	}
-	
+
 	private void createP2(){
-		if(menu.getP1() == 1){
+		if(menu.getP2() == 1){
 			p2I = new ImageIcon("bf109.png").getImage();
-		}if(menu.getP1() == 2){
+		}if(menu.getP2() == 2){
 			p2I = new ImageIcon("mig.png").getImage();
 		}
-		if(menu.getP1() == 3){
+		if(menu.getP2() == 3){
 			p2I = new ImageIcon("spitfire.png").getImage();
 		}
-		if(menu.getP1() == 4){
+		if(menu.getP2() == 4){
 			p2I = new ImageIcon("zero.png").getImage();
 		}
-		if(menu.getP1() == 5){
+		if(menu.getP2() == 5){
 			p2I = new ImageIcon("thunderbolt.png").getImage();
 		}
 	}
-	
+
 	private void respawnP1(){
 		plane1 = new Airplane(p1I, true);
+		p1Lives --;
+		if(p1Lives < 0){
+			started = false;
+			ended = true;
+		}
 	}
-	
+
 	private void respawnP2(){
 		plane2 = new Airplane(p2I, false);
+		p2Lives --;
+		if(p2Lives < 0){
+			started = false;
+			ended = true;
+		}
 	}
 
 
 	public Menu getMenu(){
 		return menu;
+	}
+
+	public int getP1Lives(){
+		return p1Lives;
+	}
+
+	public int getP2Lives(){
+		return p2Lives;
 	}
 
 	public void addBomb(Bomb bomb){
@@ -407,7 +445,12 @@ public class Dogfight extends JPanel implements KeyListener{
 		background = image;
 	}
 
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g2){
+		Graphics2D g = (Graphics2D)g2;
+		double ratioX = (double)getWidth()/1000;
+		double ratioY = (double)getHeight()/700;
+		g.scale(ratioX, ratioY);
+
 		g.drawImage(background, 0, 0, this);
 
 
@@ -455,8 +498,10 @@ public class Dogfight extends JPanel implements KeyListener{
 			g.drawRect(WIDTH - 110, 5, 100, 10);
 			g.setColor(Color.BLUE);
 			g.fillRect(10, 5, p1H, 10);
+			g.drawString("P1: " + p1Lives, 115, 15);
 			g.setColor(Color.RED);
 			g.fillRect(WIDTH - 110, 5, p2H, 10);
+			g.drawString("P2: " + p2Lives, WIDTH - 145, 15);
 
 
 			if(started == true){ //If the game has been started
@@ -469,17 +514,29 @@ public class Dogfight extends JPanel implements KeyListener{
 					bombs.get(i).paint(g, this);
 				}
 			}
+			if(Menu.counting == true){
+				g.setColor(Color.RED);
+				g.setFont(new Font("Serif", Font.BOLD, 50));
+				g.drawString(Menu.countdown + "", WIDTH/2 - Menu.xMinus, HEIGHT/2 - 20);
+			}
 		}
 		else{
 
 			if(menu.getOnMenu() == true){
 				menu.paintMenu(g, this);
 			}
-			else if(Menu.counting == true){
-				g.setColor(Color.RED);
-				g.setFont(new Font("Serif", Font.BOLD, 50));
-				g.drawString(Menu.countdown + "", WIDTH/2 - Menu.xMinus, HEIGHT/2 - 20);
+		}
+		
+		if(ended == true){
+			g.setFont(new Font("Serif", Font.BOLD, 50));
+			g.setColor(Color.RED);
+			if(Dogfight.panel.getP1Lives() < 0){
+				g.drawString("P2 WINS!", 400, 300);
 			}
+			else{
+				g.drawString("P1 WINS!", 400, 300);
+			}
+
 		}
 	}
 }

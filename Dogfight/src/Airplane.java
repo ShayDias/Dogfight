@@ -25,13 +25,18 @@ public class Airplane{
 	private boolean flying = true, moving = true;
 	private int rotation = 8;
 	private int canShoot, canBomb, numBombs, respawnTimer;
+	private int timeOut;
 	private Sounds sounds = new Sounds();
+	private boolean exploded;
 
 	//private int bombs = 3;
 
 
 	public Airplane(Image plane, boolean isP1){
+		exploded = false;
+		sounds.playPropellers();
 		flying = true;
+		timeOut = 0;
 		moving = true;
 		respawnTimer = 0;
 		canShoot = 0;
@@ -105,53 +110,57 @@ public class Airplane{
 	}
 
 	private void crash(){
-		flying = false;
-		if(isP1 == false){
-			this.rotate(30 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e2) {
-				e2.printStackTrace();
+		if(flying == true){
+			flying = false;
+			if(isP1 == false){
+				this.rotate(30 - angle);
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e2) {
+					e2.printStackTrace();
+				}
+				this.rotate(60 - angle);
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				this.rotate(90 - angle);
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-			this.rotate(60 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+			else{
+				this.rotate(210 - angle);
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e2) {
+					e2.printStackTrace();
+				}
+				this.rotate(240 - angle);
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				this.rotate(270 - angle);
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-			this.rotate(90 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			speed = 8;
 		}
-		else{
-			this.rotate(210 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e2) {
-				e2.printStackTrace();
-			}
-			this.rotate(240 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			this.rotate(270 - angle);
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-
-		speed = 8;
 	}
 
 	public void explode(){
+		if(exploded == false){
+			sounds.playExplosion();
+		}
+		exploded = true;
 		plane = new ImageIcon("explosion.gif").getImage();
 		plane.getScaledInstance(150, 150, 100);
 		//		transform.translate(30, 10);
@@ -167,6 +176,15 @@ public class Airplane{
 			this.crash();
 		}
 	}
+
+	public int getTimeOut(){
+		return timeOut;
+	}
+
+	public void setTimeOut(int change){
+		timeOut = change;
+	}
+
 	public void rotate(){
 		angle += rotation;
 		transform.rotate(Math.toRadians(rotation));
@@ -182,7 +200,7 @@ public class Airplane{
 		hitbox = new Polygon(xTrans, yTrans, 4);
 		Dogfight.panel.repaint();
 	}
-	
+
 	public void rotateDown(){
 		angle -= rotation;
 		transform.rotate(Math.toRadians(-rotation));
@@ -224,15 +242,16 @@ public class Airplane{
 				numBombs --;
 				Bomb bomb = new Bomb(hitbox.getBounds());
 				Dogfight.panel.addBomb(bomb);
+				sounds.playWhistle();
 			}
 		}
 	}
 
-	
+
 	public void incCanBomb(){
 		canBomb ++;
 	}
-	
+
 	public void incCanShoot(){
 		canShoot ++;
 	}
@@ -242,8 +261,12 @@ public class Airplane{
 		if(canShoot > 5){
 			canShoot = 0;
 			if(isP1 == true){
-				sounds.playSound();
+			sounds.playSound();
 			}
+			else{
+				sounds.playSound2();
+			}
+
 		}
 		if(canShoot == 0){
 			Bullet bullet = new Bullet(new AffineTransform(transform), angle);
@@ -264,11 +287,11 @@ public class Airplane{
 	public int getRespawnTimer(){
 		return respawnTimer;
 	}
-	
+
 	public void incRespawnTimer(){
 		respawnTimer ++;
 	}
-	
+
 	public Image getImage(){
 		return plane;
 	}
@@ -316,23 +339,46 @@ public class Airplane{
 		xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
 		yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
 		hitbox = new Polygon(xTrans, yTrans, 4);
+
+		if(!this.hitbox.intersects(bounds)){
+			timeOut += 1;
+			if(timeOut >= 20){
+				if(isP1 == true){
+					transform.setToTranslation(80, 300);
+					transform.scale(-1, 1);
+					angle = 0;
+				}
+				else{
+					transform.setToTranslation(920, 300);
+					angle = 180;
+				}
+				timeOut = 0;
+				src = new double[]{
+						xs[0], ys[0],
+						xs[1], ys[1],
+						xs[2], ys[2],
+						xs[3], ys[3]};
+				t = new AffineTransform(transform);
+				t.transform(src, 0, dst, 0, 4);
+				xTrans = new int[]{(int)dst[0], (int)dst[2],(int)dst[4],(int)dst[6]};
+				yTrans = new int[]{(int)dst[1], (int)dst[3],(int)dst[5],(int)dst[7]};
+				hitbox = new Polygon(xTrans, yTrans, 4);
+			}
+		}
 	}
 
 	public int getHealth(){
 		return health;
 	}
 
-	public void draw(Graphics g, ImageObserver i){
-		Graphics2D g2d = (Graphics2D)g;
-
-
+	public void draw(Graphics2D g2d, ImageObserver i){
 		if(isP1 == true){
 			g2d.drawImage(plane, transform, i);
 		}
 		else{
 			g2d.drawImage(plane, transform, i);
 		}
-		//		g2d.draw(hitbox);
+		//				g2d.draw(hitbox);
 	}
 
 }

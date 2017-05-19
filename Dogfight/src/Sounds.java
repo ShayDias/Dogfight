@@ -73,7 +73,7 @@ public class Sounds{
 	  
 	public void playSound2() {
 	    try {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("MachineGun.wav").getAbsoluteFile());
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("AK47.wav").getAbsoluteFile());
 	        Clip clip = AudioSystem.getClip();
 	        clip.open(audioInputStream);
 	        clip.start();
@@ -83,6 +83,42 @@ public class Sounds{
 	    }
 	}
 	  
+
+	public void playPropellers() {
+	    try {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("ME109.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    } catch(Exception ex) {
+	        System.out.println("Error with playing sound.");
+	        ex.printStackTrace();
+	    }
+	}
+	
+	public void playExplosion() {
+	    try {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("Explosion.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    } catch(Exception ex) {
+	        System.out.println("Error with playing sound.");
+	        ex.printStackTrace();
+	    }
+	}
+	
+	public void playWhistle() {
+	    try {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("BombWhistle.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    } catch(Exception ex) {
+	        System.out.println("Error with playing sound.");
+	        ex.printStackTrace();
+	    }
+	}
 	
 
 

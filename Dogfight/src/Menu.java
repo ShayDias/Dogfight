@@ -51,10 +51,11 @@ public class Menu {
 	}
 
 	public void start(){
+		Dogfight.panel.repaint();
 		Dogfight.setBackground(new ImageIcon("dogfight.jpg").getImage().getScaledInstance((int)Dogfight.bounds.getWidth(), (int)Dogfight.bounds.getHeight(), 100));
 
 	}
-	
+
 	public void end(){
 		Dogfight.setBackground(new ImageIcon("background.png").getImage().getScaledInstance((int)Dogfight.bounds.getWidth(), (int)Dogfight.bounds.getHeight(), 100));
 	}
@@ -148,7 +149,7 @@ public class Menu {
 	public int getP1(){
 		return p1;
 	}
-	
+
 	public void changeP2(int change){
 		p2 += change;
 		if(p2 > 5){
@@ -167,7 +168,7 @@ public class Menu {
 			}
 		}
 	}
-	
+
 	public int getP2(){
 		return p2;
 	}

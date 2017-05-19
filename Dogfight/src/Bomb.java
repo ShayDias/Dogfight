@@ -18,6 +18,7 @@ public class Bomb{
 	private Image bomb;
 	private boolean moving = true;
 	private boolean drawing = true;
+	private Sounds sounds = new Sounds();
 
 
 	public Bomb(Rectangle startPos){
@@ -35,7 +36,7 @@ public class Bomb{
 
 	public void move(){
 		if(moving == true){
-			y += 10;
+			y += 15;
 			hitbox = new Rectangle(x, y, width, height);
 		}
 	}
@@ -57,6 +58,7 @@ public class Bomb{
 	}
 	
 	public void explode(){
+		sounds.playExplosion();
 		bomb = new ImageIcon("explosion.gif").getImage();
 		bomb = bomb.getScaledInstance(50, 50, 100);
 	}
@@ -69,8 +71,7 @@ public class Bomb{
 		return damage;
 	}
 
-	public void paint(Graphics g, ImageObserver i){
-		Graphics2D g2d = (Graphics2D)g;
+	public void paint(Graphics2D g2d, ImageObserver i){
 		g2d.drawImage(bomb, x, y, i);
 		g2d.setColor(Color.RED);
 //		g2d.draw(hitbox);

@@ -21,7 +21,7 @@ public class Bullet{
 	private int[] xTrans, yTrans;
 	private Image bullet = new ImageIcon("bullet.png").getImage();
 	private AffineTransform t;
-	private int damage = 5;
+	private int damage = 10;
 	
 	public Bullet(AffineTransform transform, int angle){
 		transform.translate(25, 15);
@@ -86,10 +86,9 @@ public class Bullet{
 		return damage;
 	}
 	
-	public void paint(Graphics g, ImageObserver i){
-		Graphics2D g2d = (Graphics2D)g;
-		g2d.setColor(Color.RED);
-		g2d.drawImage(bullet, transform, i);
+	public void paint(Graphics2D g, ImageObserver i){
+		g.setColor(Color.RED);
+		g.drawImage(bullet, transform, i);
 //		g.drawPolygon(hitbox);
 	}
 
